@@ -1,0 +1,28 @@
+/*
+ * Magic Publishing is MIT licensed, copyright Thomas Hansen - thomas@servergardens.com - Se enclosed LICENSE files for terms of use
+ */
+
+.login-card {
+    max-width: 500px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5rem;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+}
+
+.sidenav-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    font-size: 1.2rem;
+}
+
+.ajax-wait {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1000;
+}

@@ -1,0 +1,26 @@
+.arguments
+   role.like:string
+   role.mt:string
+   role.lt:string
+   role.mteq:string
+   role.lteq:string
+   role.neq:string
+   role.eq:string
+   user.like:string
+   user.mt:string
+   user.lt:string
+   user.mteq:string
+   user.lteq:string
+   user.neq:string
+   user.eq:string
+auth.ticket.verify:root
+add:x:./*/wait.slots.signal/*/args
+   get-nodes:x:@.arguments/*
+wait.slots.signal:magic.db.mysql.read
+   database:magic
+   table:users_roles
+   args
+      limit:long:1
+   columns
+      count(*) as count
+slots.return-nodes:x:@wait.slots.signal/*

@@ -1,0 +1,19 @@
+.arguments
+   username.like:string
+   username.mt:string
+   username.lt:string
+   username.mteq:string
+   username.lteq:string
+   username.neq:string
+   username.eq:string
+auth.ticket.verify:root
+add:x:./*/wait.slots.signal/*/args
+   get-nodes:x:@.arguments/*
+wait.slots.signal:magic.db.mysql.read
+   database:magic
+   table:users
+   args
+      limit:long:1
+   columns
+      count(*) as count
+slots.return-nodes:x:@wait.slots.signal/*

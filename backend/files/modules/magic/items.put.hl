@@ -1,0 +1,19 @@
+.arguments
+   id:long
+   url:string
+   author:string
+   template:string
+   item_type:string
+   title:string
+   content:string
+auth.ticket.verify:root
+add:x:./*/wait.slots.signal/*/values
+   get-nodes:x:@.arguments/*
+unwrap:x:+/*/ids/*
+wait.slots.signal:magic.db.mysql.update
+   database:magic
+   table:items
+   values
+   ids
+      id:x:@.arguments/*/id
+slots.return-nodes:x:@wait.slots.signal/*

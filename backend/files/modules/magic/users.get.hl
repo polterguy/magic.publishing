@@ -1,0 +1,22 @@
+.arguments
+   limit:long
+   offset:long
+   order:string
+   direction:string
+   username.like:string
+   username.mt:string
+   username.lt:string
+   username.mteq:string
+   username.lteq:string
+   username.neq:string
+   username.eq:string
+auth.ticket.verify:root
+add:x:./*/wait.slots.signal/*/args
+   get-nodes:x:@.arguments/*
+wait.slots.signal:magic.db.mysql.read
+   database:magic
+   table:users
+   args
+   columns
+      username
+slots.return-nodes:x:@wait.slots.signal/*

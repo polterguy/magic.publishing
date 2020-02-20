@@ -1,0 +1,12 @@
+.arguments
+   name:string
+   value:string
+auth.ticket.verify:root
+add:x:./*/wait.slots.signal/*/values
+   get-nodes:x:@.arguments/*
+wait.slots.signal:magic.db.mysql.create
+   database:magic
+   table:settings
+   return-id:bool:false
+   values
+slots.return-nodes:x:@wait.slots.signal/*

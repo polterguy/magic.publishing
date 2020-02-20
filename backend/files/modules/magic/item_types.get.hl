@@ -1,0 +1,30 @@
+.arguments
+   limit:long
+   offset:long
+   order:string
+   direction:string
+   name.like:string
+   name.mt:string
+   name.lt:string
+   name.mteq:string
+   name.lteq:string
+   name.neq:string
+   name.eq:string
+   root_resolve_url.like:string
+   root_resolve_url.mt:string
+   root_resolve_url.lt:string
+   root_resolve_url.mteq:string
+   root_resolve_url.lteq:string
+   root_resolve_url.neq:string
+   root_resolve_url.eq:string
+auth.ticket.verify:root
+add:x:./*/wait.slots.signal/*/args
+   get-nodes:x:@.arguments/*
+wait.slots.signal:magic.db.mysql.read
+   database:magic
+   table:item_types
+   args
+   columns
+      name
+      root_resolve_url
+slots.return-nodes:x:@wait.slots.signal/*

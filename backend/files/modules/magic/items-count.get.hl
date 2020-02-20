@@ -1,0 +1,66 @@
+.arguments
+   id.mt:long
+   id.lt:long
+   id.mteq:long
+   id.lteq:long
+   id.neq:long
+   id.eq:long
+   url.like:string
+   url.mt:string
+   url.lt:string
+   url.mteq:string
+   url.lteq:string
+   url.neq:string
+   url.eq:string
+   author.like:string
+   author.mt:string
+   author.lt:string
+   author.mteq:string
+   author.lteq:string
+   author.neq:string
+   author.eq:string
+   template.like:string
+   template.mt:string
+   template.lt:string
+   template.mteq:string
+   template.lteq:string
+   template.neq:string
+   template.eq:string
+   item_type.like:string
+   item_type.mt:string
+   item_type.lt:string
+   item_type.mteq:string
+   item_type.lteq:string
+   item_type.neq:string
+   item_type.eq:string
+   created.mt:date
+   created.lt:date
+   created.mteq:date
+   created.lteq:date
+   created.neq:date
+   created.eq:date
+   title.like:string
+   title.mt:string
+   title.lt:string
+   title.mteq:string
+   title.lteq:string
+   title.neq:string
+   title.eq:string
+   content.like:string
+   content.mt:string
+   content.lt:string
+   content.mteq:string
+   content.lteq:string
+   content.neq:string
+   content.eq:string
+auth.ticket.verify:root
+add:x:./*/wait.slots.signal/*/args
+   get-nodes:x:@.arguments/*
+wait.slots.signal:magic.db.mysql.read
+   database:magic
+   table:items
+   args
+      limit:long:1
+   columns
+      count(*) as count
+slots.return-nodes:x:@wait.slots.signal/*
