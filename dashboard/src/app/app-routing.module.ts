@@ -12,7 +12,7 @@ import { AuthComponent } from './components/auth/auth.component';
 import { ProfileComponent } from './components/profile/profile.component';
 
 // Then importing all "entity components". Basically, the datagrids for viewing entities from your backend.
-import { Item_typesComponent } from './components/item_types/item_types.component';
+import { ItemTypesComponent } from './components/item_types/item_types.component';
 import { ItemsComponent } from './components/items/items.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { TemplatesComponent } from './components/templates/templates.component';
@@ -27,7 +27,7 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
 
   // Then routes for all entity components.
-  { path: 'item_types', component: Item_typesComponent },
+  { path: 'item_types', component: ItemTypesComponent },
   { path: 'items', component: ItemsComponent },
   { path: 'settings', component: SettingsComponent },
   { path: 'templates', component: TemplatesComponent },

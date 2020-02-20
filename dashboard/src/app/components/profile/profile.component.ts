@@ -13,8 +13,8 @@ import { HttpService } from 'src/app/services/http-service';
 })
 export class ProfileComponent {
 
-  private password = '';
-  private passwordRepeat = '';
+  public password = '';
+  public passwordRepeat = '';
 
   constructor(
     private snackBar: MatSnackBar,

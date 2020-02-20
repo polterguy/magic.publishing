@@ -4,8 +4,8 @@
 
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material';
-import { MatPaginator } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
 import { PageEvent } from '@angular/material/paginator';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -26,19 +26,19 @@ import { EditTemplatesComponent } from './modals/edit.templates.component';
 export class TemplatesComponent implements OnInit {
 
   // Actual data currently displayed in the grid. The mat-table will be databound to this list.
-  private data: any[];
+  public data: any[];
 
   // Which columns we should display. Reorder to prioritize columns differently.
   // Notice! 'delete-instance' should always come last!
-  private displayedColumns: string[] = ['name', 'delete-instance'];
+  public displayedColumns: string[] = ['name', 'delete-instance'];
 
   // Current filter being applied to filter items from our backend.
-  private filter: any = {
+  public filter: any = {
     limit: 10
   };
 
   // Number of items our backend reports are available in total, matching our above filter condition.
-  private count = 0;
+  public count = 0;
   private hasFiltered = false;
 
   // Number of milliseconds after a keystroke before filtering should be re-applied.
@@ -57,8 +57,8 @@ export class TemplatesComponent implements OnInit {
   private roles: string [] = [];
 
   // Form control declarations to bind up with reactive form elements.
-  private name: FormControl;
-  private content: FormControl;
+  public name: FormControl;
+  public content: FormControl;
 
 
   // Constructor taking a bunch of services/helpers through dependency injection.

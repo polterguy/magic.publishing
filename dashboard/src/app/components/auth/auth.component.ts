@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { AuthService, AuthFilter } from 'src/app/services/auth-service';
 import { CreateRoleDialogComponent } from './modals/create-role-dialog';
 import { CreateUserDialogComponent } from './modals/create-user-dialog';
@@ -20,18 +20,18 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 })
 export class AuthComponent implements OnInit {
 
-  private userColumns: string[] = ['username', 'delete'];
-  private roleColumns: string[] = ['name', 'delete'];
-  private users: any[] = null;
-  private roles: any[] = null;
-  private userCount = 0;
-  private roleCount = 0;
-  private search: FormControl;
-  private userFilter: AuthFilter = {
+  public userColumns: string[] = ['username', 'delete'];
+  public roleColumns: string[] = ['name', 'delete'];
+  public users: any[] = null;
+  public roles: any[] = null;
+  public userCount = 0;
+  public roleCount = 0;
+  public search: FormControl;
+  public userFilter: AuthFilter = {
     limit: 10,
     offset: 0,
   };
-  private roleFilter: AuthFilter = {
+  public roleFilter: AuthFilter = {
     limit: 10,
     offset: 0,
   };

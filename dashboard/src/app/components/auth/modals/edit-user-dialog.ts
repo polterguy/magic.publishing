@@ -3,7 +3,9 @@
  */
 
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar, MatSelectChange } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSelectChange } from '@angular/material/select';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth-service';
 
 export interface DialogData {
@@ -16,9 +18,9 @@ export interface DialogData {
 })
 export class EditUserDialogComponent implements OnInit {
 
-  private userRoles: any[] = null;
-  private allRoles: any[] = null;
-  private selectedValue: any = null;
+  public userRoles: any[] = null;
+  public allRoles: any[] = null;
+  public selectedValue: any = null;
 
   constructor(
     public dialogRef: MatDialogRef<EditUserDialogComponent>,

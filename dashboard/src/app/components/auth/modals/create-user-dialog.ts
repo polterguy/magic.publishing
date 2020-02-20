@@ -3,7 +3,8 @@
  */
 
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth-service';
 
 export interface DialogData {
@@ -16,7 +17,7 @@ export interface DialogData {
 })
 export class CreateUserDialogComponent {
 
-  private passwordRepeat: string;
+  public passwordRepeat: string;
 
   constructor(
     public dialogRef: MatDialogRef<CreateUserDialogComponent>,
@@ -41,7 +42,7 @@ export class CreateUserDialogComponent {
       });
     });
   }
-  
+
   cancel() {
     this.dialogRef.close();
   }

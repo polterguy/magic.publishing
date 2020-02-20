@@ -26,11 +26,11 @@ import { LoaderService } from './services/loader-service';
 export class AppComponent {
 
   // Databound towards login form parts of component.
-  private username: string;
-  private password: string;
+  public username: string;
+  public password: string;
 
   // Databound towards your side navigation. If true, it implies the navbar menu is expanded.
-  private sidenavOpened = false;
+  public sidenavOpened = false;
 
   /*
    * Smaller optimisation to make it easier to check which roles currently logged in
@@ -44,7 +44,7 @@ export class AppComponent {
     private httpService: HttpService,
     private jwtHelper: JwtHelperService,
     private snackBar: MatSnackBar,
-    private loaderService: LoaderService) {
+    public loaderService: LoaderService) {
 
       // Checking if user is logged in, at which point we initialize the roles property.
       const token = localStorage.getItem('jwt_token');

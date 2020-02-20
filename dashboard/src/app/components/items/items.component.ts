@@ -4,8 +4,8 @@
 
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material';
-import { MatPaginator } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
 import { PageEvent } from '@angular/material/paginator';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -26,19 +26,19 @@ import { EditItemsComponent } from './modals/edit.items.component';
 export class ItemsComponent implements OnInit {
 
   // Actual data currently displayed in the grid. The mat-table will be databound to this list.
-  private data: any[];
+  public data: any[];
 
   // Which columns we should display. Reorder to prioritize columns differently.
   // Notice! 'delete-instance' should always come last!
-  private displayedColumns: string[] = ['id', 'url', 'author', 'template', 'item_type', 'created', 'title', 'content', 'delete-instance'];
+  public displayedColumns: string[] = ['id', 'url', 'author', 'template', 'item_type', 'created', 'title', 'content', 'delete-instance'];
 
   // Current filter being applied to filter items from our backend.
-  private filter: any = {
+  public filter: any = {
     limit: 10
   };
 
   // Number of items our backend reports are available in total, matching our above filter condition.
-  private count = 0;
+  public count = 0;
   private hasFiltered = false;
 
   // Number of milliseconds after a keystroke before filtering should be re-applied.
@@ -57,14 +57,14 @@ export class ItemsComponent implements OnInit {
   private roles: string [] = [];
 
   // Form control declarations to bind up with reactive form elements.
-  private id: FormControl;
-  private url: FormControl;
-  private author: FormControl;
-  private template: FormControl;
-  private item_type: FormControl;
-  private created: FormControl;
-  private title: FormControl;
-  private content: FormControl;
+  public id: FormControl;
+  public url: FormControl;
+  public author: FormControl;
+  public template: FormControl;
+  public item_type: FormControl;
+  public created: FormControl;
+  public title: FormControl;
+  public content: FormControl;
 
 
   // Constructor taking a bunch of services/helpers through dependency injection.

@@ -20,13 +20,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatDialogModule } from '@angular/material';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
-import { OWL_MOMENT_DATE_TIME_ADAPTER_OPTIONS } from 'ng-pick-datetime-moment';
 import { ChartsModule } from 'ng2-charts';
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 
@@ -50,7 +47,7 @@ import { EditUserDialogComponent } from './components/auth/modals/edit-user-dial
 import { ProfileComponent } from './components/profile/profile.component';
 
 // CRUD wrapper components, both for the datagrid, and its associated editor/creator dialog.
-import { Item_typesComponent } from './components/item_types/item_types.component';
+import { ItemTypesComponent } from './components/item_types/item_types.component';
 import { EditItem_typesComponent } from './components/item_types/modals/edit.item_types.component';
 import { ItemsComponent } from './components/items/items.component';
 import { EditItemsComponent } from './components/items/modals/edit.items.component';
@@ -76,7 +73,7 @@ export function tokenGetter() {
     EditUserDialogComponent,
     ProfileComponent,
     FormatDatePipe,
-    Item_typesComponent,
+    ItemTypesComponent,
     EditItem_typesComponent,
     ItemsComponent,
     EditItemsComponent,
@@ -112,10 +109,7 @@ export function tokenGetter() {
     MatDialogModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    MatDatepickerModule,
     MatMomentDateModule,
-    OwlDateTimeModule,
-    OwlNativeDateTimeModule,
     ChartsModule,
   ],
   providers: [
@@ -123,10 +117,6 @@ export function tokenGetter() {
       provide: HTTP_INTERCEPTORS,
       useClass: LoaderInterceptor,
       multi: true
-    },
-    {
-      provide: OWL_MOMENT_DATE_TIME_ADAPTER_OPTIONS,
-      useValue: { useUtc: true }
     }
   ],
   bootstrap: [AppComponent],

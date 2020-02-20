@@ -4,8 +4,8 @@
 
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material';
-import { MatPaginator } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
 import { PageEvent } from '@angular/material/paginator';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -19,26 +19,26 @@ import { EditItem_typesComponent } from './modals/edit.item_types.component';
  * entities from your HTTP REST backend.
  */
 @Component({
-  selector: 'app-item_types',
+  selector: 'app-item-types',
   templateUrl: './item_types.component.html',
   styleUrls: ['./item_types.component.scss']
 })
-export class Item_typesComponent implements OnInit {
+export class ItemTypesComponent implements OnInit {
 
   // Actual data currently displayed in the grid. The mat-table will be databound to this list.
-  private data: any[];
+  public data: any[];
 
   // Which columns we should display. Reorder to prioritize columns differently.
   // Notice! 'delete-instance' should always come last!
-  private displayedColumns: string[] = ['name', 'root_resolve_url', 'delete-instance'];
+  public displayedColumns: string[] = ['name', 'root_resolve_url', 'delete-instance'];
 
   // Current filter being applied to filter items from our backend.
-  private filter: any = {
+  public filter: any = {
     limit: 10
   };
 
   // Number of items our backend reports are available in total, matching our above filter condition.
-  private count = 0;
+  public count = 0;
   private hasFiltered = false;
 
   // Number of milliseconds after a keystroke before filtering should be re-applied.
@@ -57,8 +57,8 @@ export class Item_typesComponent implements OnInit {
   private roles: string [] = [];
 
   // Form control declarations to bind up with reactive form elements.
-  private name: FormControl;
-  private root_resolve_url: FormControl;
+  public name: FormControl;
+  public root_resolve_url: FormControl;
 
 
   // Constructor taking a bunch of services/helpers through dependency injection.
