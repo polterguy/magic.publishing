@@ -6,7 +6,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpService } from 'src/app/services/http-service';
-import { AuthService } from 'src/app/services/auth-service';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 /*
  * Input data to dialog.
@@ -47,29 +47,55 @@ export class EditItemsComponent implements OnInit {
     public dialogRef: MatDialogRef<EditItemsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private snackBar: MatSnackBar,
+    private jwtHelper: JwtHelperService,
     private service: HttpService) { }
 
-    ngOnInit() {
+  ngOnInit() {
 
-      // Hack necessary to make sure CodeMirror functions correctly (due to animations).
-      setTimeout(() => { this.shouldShow = true; }, 200);
+    // Hack necessary to make sure CodeMirror functions correctly (due to animations).
+    setTimeout(() => { this.shouldShow = true; }, 200);
 
-      // Retrieving all templates in system.
-      this.service.templates_Get({}).subscribe(res => {
-        this.templates = res;
-      });
-      this.service.item_types_Get({}).subscribe(res => {
-        this.types = res;
-        console.log(res);
-      });
+    // Retrieving all templates in system.
+    this.service.templates_Get({}).subscribe(res => {
+      this.templates = res;
+      this.data.entity.template = this.templates[0].name;
+    });
+    this.service.item_types_Get({}).subscribe(res => {
+      this.types = res;
+      this.data.entity.item_type = this.types[0].name;
+    });
+    if (!this.data.isEdit) {
+      const token = this.jwtHelper.decodeToken(localStorage.getItem('jwt_token'));
+      this.data.entity.author = token.unique_name;
     }
+  }
 
-    canEditColumn(name: string) {
+  canEditColumn(name: string) {
     if (this.data.isEdit) {
       return this.updateColumns.filter(x => x === name).length > 0 &&
-        this.primaryKeys.filter(x => x === name).length == 0;
+        this.primaryKeys.filter(x => x === name).length === 0;
     }
     return this.createColumns.filter(x => x === name).length > 0;
+  }
+
+  titleChanged() {
+    if (!this.data.isEdit) {
+      if (this.data.entity.url === undefined || this.data.entity.url === null || this.data.entity.url === '') {
+        let url: string = this.data.entity.title.toLowerCase();
+        url = url.split(' ').join('-');
+        url = url.replace(/[&\/\\#, +()$~%.'":*?<>{}]/g, '-');
+        while (url.indexOf('--') >= 0) {
+          url = url.split('--').join('-');
+        }
+        if (url.startsWith('-')) {
+          url = url.substring(1);
+        }
+        if (url.endsWith('-')) {
+          url = url.substring(0, url.length - 1);
+        }
+        this.data.entity.url = url;
+      }
+    }
   }
 
   /*
