@@ -6,3 +6,12 @@
     background:rgb(255,100,100);
     color:rgb(0,0,0);
 }
+
+.details-full-width {
+    width: 100%;
+    display: block;
+    label {
+        font-weight: bold;
+        display: block;
+    }
+}

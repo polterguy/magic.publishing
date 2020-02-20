@@ -93,15 +93,8 @@
               (click)="toggleDetails(el)">
               <mat-icon matSuffix>close</mat-icon>
             </button>
-            <button
-              *ngIf="inRole(['admin'])"
-              mat-button
-              class="edit-details"
-              (click)="editDetails(el)">
-              <mat-icon matSuffix>edit</mat-icon>
-            </button>
-            <p class="details"><label>name</label><span>{{el.name}}</span></p>
-            <p class="details"><label>Root resolve URL</label><span>{{el.root_resolve_url}}</span></p>
+            <p class="details-full-width"><label>Name</label><span>{{el.name}}</span></p>
+            <p class="details-full-width"><label>Root resolve URL</label><span>{{el.root_resolve_url}}</span></p>
           </div>
         </td>
       </ng-container>

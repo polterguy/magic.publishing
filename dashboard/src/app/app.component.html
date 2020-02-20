@@ -20,7 +20,7 @@
       <span class="menu-item-text">Home</span>
     </a>
     <a
-      *ngIf="inRole(['admin'])"
+      *ngIf="inRole(['admin', 'author', 'editor'])"
       mat-button
       routerLink="/templates"
       routerLinkActive="active-link"
@@ -31,7 +31,7 @@
       <span class="menu-item-text">Templates</span>
     </a>
     <a
-      *ngIf="inRole(['admin'])"
+      *ngIf="inRole(['admin', 'author', 'editor'])"
       mat-button
       routerLink="/items"
       routerLinkActive="active-link"
@@ -42,7 +42,7 @@
       <span class="menu-item-text">Items</span>
     </a>
     <a
-      *ngIf="inRole(['admin'])"
+      *ngIf="inRole(['admin', 'author', 'editor'])"
       mat-button
       routerLink="/item_types"
       routerLinkActive="active-link"
