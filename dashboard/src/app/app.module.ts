@@ -55,6 +55,7 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { EditSettingsComponent } from './components/settings/modals/edit.settings.component';
 import { TemplatesComponent } from './components/templates/templates.component';
 import { EditTemplatesComponent } from './components/templates/modals/edit.templates.component';
+import { MarkedPipe } from './pipes/marked.pipe';
 
 
 // Helper to retrieve JWT token. Needed for "oauth0".
@@ -81,6 +82,7 @@ export function tokenGetter() {
     EditSettingsComponent,
     TemplatesComponent,
     EditTemplatesComponent,
+    MarkedPipe,
   ],
   imports: [
     BrowserModule,

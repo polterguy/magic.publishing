@@ -232,14 +232,13 @@
               (click)="editDetails(el)">
               <mat-icon matSuffix>edit</mat-icon>
             </button>
-            <p class="details"><label>Id</label><span>{{el.id}}</span></p>
-            <p class="details"><label>URL</label><span>{{el.url}}</span></p>
-            <p class="details"><label>Author</label><span>{{el.author}}</span></p>
-            <p class="details"><label>Template</label><span>{{el.template}}</span></p>
-            <p class="details"><label>Item type</label><span>{{el.item_type}}</span></p>
-            <p class="details"><label>Created</label><span>{{el.created | formatDate}}</span></p>
-            <p class="details"><label>Title</label><span>{{el.title}}</span></p>
-            <p class="details"><label>Content</label><span>{{el.content}}</span></p>
+            <p class="details-full-width"><label>Title</label> <span>{{el.title}}</span></p>
+            <p class="details-full-width"><label>URL</label> <span>{{el.url}}</span></p>
+            <p class="details-full-width"><label>Author</label> <span>{{el.author}}</span></p>
+            <p class="details-full-width"><label>Template</label> <span>{{el.template}}</span></p>
+            <p class="details-full-width"><label>Item type</label> <span>{{el.item_type}}</span></p>
+            <p class="details-full-width"><label>Created</label> <span>{{el.created | formatDate}}</span></p>
+            <div class="details-preview" [innerHTML]="el.content | marked"></div>
           </div>
         </td>
       </ng-container>

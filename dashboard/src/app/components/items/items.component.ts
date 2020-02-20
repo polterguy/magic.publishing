@@ -30,7 +30,7 @@ export class ItemsComponent implements OnInit {
 
   // Which columns we should display. Reorder to prioritize columns differently.
   // Notice! 'delete-instance' should always come last!
-  public displayedColumns: string[] = ['id', 'url', 'author', 'template', 'item_type', 'created', 'title', 'content', 'delete-instance'];
+  public displayedColumns: string[] = ['title', 'author', 'created', 'delete-instance'];
 
   // Current filter being applied to filter items from our backend.
   public filter: any = {

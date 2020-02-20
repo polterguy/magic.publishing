@@ -22,13 +22,13 @@
     <a
       *ngIf="inRole(['admin'])"
       mat-button
-      routerLink="/item_types"
+      routerLink="/templates"
       routerLinkActive="active-link"
       class="menu-item"
       (click)="closeNavigator()"
       [routerLinkActiveOptions]="{exact:true}">
       <mat-icon matSuffix>grade</mat-icon>
-      <span class="menu-item-text">Item types</span>
+      <span class="menu-item-text">Templates</span>
     </a>
     <a
       *ngIf="inRole(['admin'])"
@@ -44,6 +44,17 @@
     <a
       *ngIf="inRole(['admin'])"
       mat-button
+      routerLink="/item_types"
+      routerLinkActive="active-link"
+      class="menu-item"
+      (click)="closeNavigator()"
+      [routerLinkActiveOptions]="{exact:true}">
+      <mat-icon matSuffix>grade</mat-icon>
+      <span class="menu-item-text">Item types</span>
+    </a>
+    <a
+      *ngIf="inRole(['admin'])"
+      mat-button
       routerLink="/settings"
       routerLinkActive="active-link"
       class="menu-item"
@@ -51,17 +62,6 @@
       [routerLinkActiveOptions]="{exact:true}">
       <mat-icon matSuffix>grade</mat-icon>
       <span class="menu-item-text">Settings</span>
-    </a>
-    <a
-      *ngIf="inRole(['admin'])"
-      mat-button
-      routerLink="/templates"
-      routerLinkActive="active-link"
-      class="menu-item"
-      (click)="closeNavigator()"
-      [routerLinkActiveOptions]="{exact:true}">
-      <mat-icon matSuffix>grade</mat-icon>
-      <span class="menu-item-text">Templates</span>
     </a>
     <a
       *ngIf="inRole(['root','admin'])"

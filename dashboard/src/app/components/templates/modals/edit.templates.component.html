@@ -3,6 +3,7 @@
 <div mat-dialog-content>
 
   <ngx-codemirror
+    *ngIf="shouldShow"
     [(ngModel)]="data.entity.content"
     [options]="{
   lineNumbers: true,

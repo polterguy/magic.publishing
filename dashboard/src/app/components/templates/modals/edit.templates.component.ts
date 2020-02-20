@@ -2,7 +2,7 @@
  * Magic Publishing is MIT licensed, copyright Thomas Hansen - thomas@servergardens.com - Se enclosed LICENSE files for terms of use
  */
 
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpService } from 'src/app/services/http-service';
@@ -25,7 +25,7 @@ export interface DialogData {
   templateUrl: './edit.templates.component.html',
   styleUrls: ['./edit.templates.component.scss']
 })
-export class EditTemplatesComponent {
+export class EditTemplatesComponent implements OnInit {
 
   /*
    * Only the following properties of the given data.entity will actually
@@ -35,6 +35,7 @@ export class EditTemplatesComponent {
   private createColumns: string[] = ['name', 'content'];
   private updateColumns: string[] = ['name', 'content'];
   private primaryKeys: string[] = ['name'];
+  public shouldShow = false;
 
   /*
    * Constructor taking a bunch of services injected using dependency injection.
@@ -44,6 +45,10 @@ export class EditTemplatesComponent {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private snackBar: MatSnackBar,
     private service: HttpService) { }
+
+  ngOnInit() {
+    setTimeout(() => { this.shouldShow = true; }, 200);
+  }
 
   canEditColumn(name: string) {
     if (this.data.isEdit) {

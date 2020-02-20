@@ -6,3 +6,24 @@
     background:rgb(255,100,100);
     color:rgb(0,0,0);
 }
+
+.details-full-width {
+    display: block;
+    width: 100%;
+    label {
+        font-weight: bold;
+        display: inline-block;
+        width: 8rem;
+    }
+}
+
+.details-preview {
+    padding: 2rem;
+    margin-left: -2rem;
+    margin-right: -2rem;
+    border-radius: .5rem;
+    margin-bottom: 1rem;
+    background-color: rgb(240,240,240);
+    width: 100%;
+    display: block;
+}

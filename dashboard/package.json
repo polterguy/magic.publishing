@@ -26,6 +26,7 @@
     "@ctrl/ngx-codemirror": "^3.0.0",
     "chart.js": "^2.9.3",
     "codemirror": "^5.51.0",
+    "marked": "^0.8.0",
     "moment": "^2.24.0",
     "ng2-charts": "^2.3.0",
     "rxjs": "~6.5.4",
