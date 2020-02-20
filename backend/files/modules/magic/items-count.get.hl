@@ -53,7 +53,7 @@
    content.lteq:string
    content.neq:string
    content.eq:string
-auth.ticket.verify:root
+auth.ticket.verify:admin, editor, author
 add:x:./*/wait.slots.signal/*/args
    get-nodes:x:@.arguments/*
 wait.slots.signal:magic.db.mysql.read

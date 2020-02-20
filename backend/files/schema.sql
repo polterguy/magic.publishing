@@ -30,7 +30,7 @@ CREATE TABLE `users` (
  */
 CREATE TABLE `roles` (
   `name` varchar(45) NOT NULL,
-  `description` varchar(256) NULL,
+  `description` varchar(512) NULL,
   PRIMARY KEY (`name`),
   UNIQUE KEY `name_UNIQUE` (`name`)
 );
@@ -51,10 +51,18 @@ CREATE TABLE `users_roles` (
 /*
  * Inserting some few roles into our roles table.
  */
-insert into roles (name, description) values ('root', 'This is a root account in your system, and it has complete access to do anything.');
-insert into roles (name, description) values ('admin', 'This is an administrator account in your system, and can administrate most parts of the site.');
-insert into roles (name, description) values ('user', 'This is a normal user in your system, and it does not have elevated rights in general.');
-insert into roles (name, description) values ('guest', 'This is just a guest visitor to your system, and does not have elevated rights in general.');
+insert into roles (name, description) values ('admin', 'This is an administrator account in your system, and can administrate all parts of the system.');
+insert into roles (name, description) values ('editor', 'This is an editor in your system, and allowed to update, delete, and publish content in your system.');
+insert into roles (name, description) values ('author', 'This is an elevated user in your system, and allowed to create new content, that an editor must explicitly accept before it is being published.');
+insert into roles (name, description) values ('guest', 'This is just a guest visitor to your system, and does not have elevated rights in general, and cannot change the state of your system in any ways.');
+
+/*
+ * Inserting a default user with username "admin" and password of "admin".
+ * Notice, password is hashed with BlowFish hashing algorithm.
+ * We also add this user to the admin role.
+ */
+insert into users (`username`, `password`) values ('admin', '$2b$10$aaoyEYvWhlePmjufMRIfeOAJrhB/qTvWIAlAIpUI.TXIbySBKbB02');
+insert into users_roles (role, user) values ('admin', 'admin');
 
 
 
@@ -73,6 +81,7 @@ insert into roles (name, description) values ('guest', 'This is just a guest vis
 CREATE TABLE `item_types` (
   `name` varchar(50) NOT NULL,
   `root_resolve_url` varchar(50) NOT NULL,
+  UNIQUE KEY `root_resolve_url_UNIQUE` (`root_resolve_url`),
   PRIMARY KEY (`name`)
 );
 
@@ -122,6 +131,13 @@ CREATE TABLE `items` (
   CONSTRAINT `template_fky` FOREIGN KEY (`template`) REFERENCES `templates` (`name`),
   PRIMARY KEY (`id`)
 );
+
+/*
+ * Inserting default page into database.
+ */
+insert into items (`url`, `author`, `template`, `item_type`, `title`, `content`) values ('/', 'admin', 'default', 'page', 'Hello World', '# Hello World
+
+This is your first page. Feel free to edit it according to your needs.');
 
 
 

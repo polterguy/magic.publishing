@@ -6,7 +6,7 @@
    username.lteq:string
    username.neq:string
    username.eq:string
-auth.ticket.verify:root
+auth.ticket.verify:admin
 add:x:./*/wait.slots.signal/*/args
    get-nodes:x:@.arguments/*
 wait.slots.signal:magic.db.mysql.read

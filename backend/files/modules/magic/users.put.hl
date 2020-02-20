@@ -1,7 +1,7 @@
 .arguments
    username:string
    password:string
-auth.ticket.verify:root
+auth.ticket.verify:admin
 eval:x:+
 slots.signal:transformers.hash-password
    reference:x:@.arguments/*/password

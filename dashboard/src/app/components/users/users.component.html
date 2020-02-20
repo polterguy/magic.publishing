@@ -7,7 +7,7 @@
 
     <button
       mat-button
-      *ngIf="inRole(['root'])"
+      *ngIf="inRole(['admin'])"
       class="top-right"
       (click)="createNewRecord()">New ...</button>
 
@@ -42,12 +42,12 @@
         <th
           mat-header-cell
           *matHeaderCellDef
-          [ngClass]="inRole(['root']) ? 'delete-column' : 'hidden'"></th>
+          [ngClass]="inRole(['admin']) ? 'delete-column' : 'hidden'"></th>
 
         <td
           mat-cell
           *matCellDef="let el"
-          [ngClass]="inRole(['root']) ? 'delete-column' : 'hidden'">
+          [ngClass]="inRole(['admin']) ? 'delete-column' : 'hidden'">
           <button
             mat-button
             (click)="delete(el, {username: el.username})"
@@ -72,7 +72,7 @@
               <mat-icon matSuffix>close</mat-icon>
             </button>
             <button
-              *ngIf="inRole(['root'])"
+              *ngIf="inRole(['admin'])"
               mat-button
               class="edit-details"
               (click)="editDetails(el)">

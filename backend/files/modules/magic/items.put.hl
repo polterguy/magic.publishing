@@ -6,7 +6,7 @@
    item_type:string
    title:string
    content:string
-auth.ticket.verify:root
+auth.ticket.verify:admin, editor
 add:x:./*/wait.slots.signal/*/values
    get-nodes:x:@.arguments/*
 unwrap:x:+/*/ids/*

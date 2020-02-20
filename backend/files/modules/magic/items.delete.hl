@@ -1,6 +1,6 @@
 .arguments
    id:long
-auth.ticket.verify:root
+auth.ticket.verify:admin, editor
 add:x:./*/wait.slots.signal/*/ids
    get-nodes:x:@.arguments/*
 wait.slots.signal:magic.db.mysql.delete

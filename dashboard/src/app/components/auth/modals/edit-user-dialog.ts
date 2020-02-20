@@ -81,7 +81,7 @@ export class EditUserDialogComponent implements OnInit {
       });
     });
   }
-  
+
   close() {
     this.dialogRef.close();
   }
