@@ -28,6 +28,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { OWL_MOMENT_DATE_TIME_ADAPTER_OPTIONS } from 'ng-pick-datetime-moment';
 import { ChartsModule } from 'ng2-charts';
+import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 
 // Importing "oauth0" to help out with our JWT tokens.
 import { JwtModule } from '@auth0/angular-jwt';
@@ -91,6 +92,7 @@ export function tokenGetter() {
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    CodemirrorModule,
     JwtModule.forRoot({
       config: {
         tokenGetter,

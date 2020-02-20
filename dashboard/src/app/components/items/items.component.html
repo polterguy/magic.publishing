@@ -106,7 +106,7 @@
       <ng-container matColumnDef="item_type">
         <th mat-header-cell *matHeaderCellDef>
           <mat-form-field appearance="outline" class="fill-width filter-textbox">
-            <mat-label>item_type</mat-label>
+            <mat-label>Item type</mat-label>
             <input
               matInput
               placeholder="Filter ..."
@@ -121,7 +121,7 @@
             mat-button>
             <mat-icon matSuffix>{{getSortIcon('item_type')}}</mat-icon>
           </button>
-          <label class="table-header">item_type</label>
+          <label class="table-header">Item type</label>
         </th>
         <td mat-cell (click)="toggleDetails(el)" *matCellDef="let el">{{el.item_type}}</td>
       </ng-container>
@@ -232,14 +232,14 @@
               (click)="editDetails(el)">
               <mat-icon matSuffix>edit</mat-icon>
             </button>
-            <p class="details"><label>id</label><span>{{el.id}}</span></p>
-            <p class="details"><label>url</label><span>{{el.url}}</span></p>
-            <p class="details"><label>author</label><span>{{el.author}}</span></p>
-            <p class="details"><label>template</label><span>{{el.template}}</span></p>
-            <p class="details"><label>item_type</label><span>{{el.item_type}}</span></p>
-            <p class="details"><label>created</label><span>{{el.created | formatDate}}</span></p>
-            <p class="details"><label>title</label><span>{{el.title}}</span></p>
-            <p class="details"><label>content</label><span>{{el.content}}</span></p>
+            <p class="details"><label>Id</label><span>{{el.id}}</span></p>
+            <p class="details"><label>URL</label><span>{{el.url}}</span></p>
+            <p class="details"><label>Author</label><span>{{el.author}}</span></p>
+            <p class="details"><label>Template</label><span>{{el.template}}</span></p>
+            <p class="details"><label>Item type</label><span>{{el.item_type}}</span></p>
+            <p class="details"><label>Created</label><span>{{el.created | formatDate}}</span></p>
+            <p class="details"><label>Title</label><span>{{el.title}}</span></p>
+            <p class="details"><label>Content</label><span>{{el.content}}</span></p>
           </div>
         </td>
       </ng-container>

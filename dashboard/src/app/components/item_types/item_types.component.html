@@ -40,7 +40,7 @@
       <ng-container matColumnDef="root_resolve_url">
         <th mat-header-cell *matHeaderCellDef>
           <mat-form-field appearance="outline" class="fill-width filter-textbox">
-            <mat-label>root_resolve_url</mat-label>
+            <mat-label>Root resolve URL</mat-label>
             <input
               matInput
               placeholder="Filter ..."
@@ -55,7 +55,7 @@
             mat-button>
             <mat-icon matSuffix>{{getSortIcon('root_resolve_url')}}</mat-icon>
           </button>
-          <label class="table-header">root_resolve_url</label>
+          <label class="table-header">Root resolve URL</label>
         </th>
         <td mat-cell (click)="toggleDetails(el)" *matCellDef="let el">{{el.root_resolve_url}}</td>
       </ng-container>
@@ -101,7 +101,7 @@
               <mat-icon matSuffix>edit</mat-icon>
             </button>
             <p class="details"><label>name</label><span>{{el.name}}</span></p>
-            <p class="details"><label>root_resolve_url</label><span>{{el.root_resolve_url}}</span></p>
+            <p class="details"><label>Root resolve URL</label><span>{{el.root_resolve_url}}</span></p>
           </div>
         </td>
       </ng-container>

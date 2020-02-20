@@ -30,7 +30,7 @@ export class TemplatesComponent implements OnInit {
 
   // Which columns we should display. Reorder to prioritize columns differently.
   // Notice! 'delete-instance' should always come last!
-  private displayedColumns: string[] = ['name', 'content', 'delete-instance'];
+  private displayedColumns: string[] = ['name', 'delete-instance'];
 
   // Current filter being applied to filter items from our backend.
   private filter: any = {
