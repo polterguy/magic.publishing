@@ -47,7 +47,9 @@ export class EditTemplatesComponent implements OnInit {
     private service: HttpService) { }
 
   ngOnInit() {
-    setTimeout(() => { this.shouldShow = true; }, 200);
+
+      // Hack necessary to make sure CodeMirror functions correctly (due to animations).
+      setTimeout(() => { this.shouldShow = true; }, 200);
   }
 
   canEditColumn(name: string) {

@@ -1,16 +1,15 @@
 
-<h1 mat-dialog-title>{{data.isEdit ? 'Edit' : 'Create'}} Items</h1>
+<h1 mat-dialog-title>{{data.isEdit ? 'Edit' : 'Create'}} Item</h1>
 <div mat-dialog-content>
 
   <mat-form-field
-    *ngIf="canEditColumn('id')"
-    class="entity-edit-field">
+    *ngIf="canEditColumn('title')"
+    class="entity-edit-field-full-width">
     <input
       matInput
-      type="number"
-      step="1"
-      placeholder="id"
-      [(ngModel)]="data.entity.id"
+      type="text"
+      placeholder="title"
+      [(ngModel)]="data.entity.title"
       autocomplete="off">
   </mat-form-field>
 
@@ -31,6 +30,7 @@
     <input
       matInput
       type="text"
+      disabled="true"
       placeholder="author"
       [(ngModel)]="data.entity.author"
       autocomplete="off">
@@ -39,46 +39,37 @@
   <mat-form-field
     *ngIf="canEditColumn('template')"
     class="entity-edit-field">
-    <input
-      matInput
-      type="text"
-      placeholder="template"
+    <mat-select
+      placeholder="Select template type"
       [(ngModel)]="data.entity.template"
-      autocomplete="off">
+      matTooltip="The template is the skin or theme for your item">
+      <mat-option
+        *ngFor="let cur of templates"
+        [value]="cur.name">{{cur.name}}</mat-option>
+    </mat-select>
   </mat-form-field>
 
   <mat-form-field
     *ngIf="canEditColumn('item_type')"
     class="entity-edit-field">
-    <input
-      matInput
-      type="text"
-      placeholder="Item type"
+    <mat-select
+      placeholder="Select item type"
       [(ngModel)]="data.entity.item_type"
-      autocomplete="off">
+      matTooltip="This decides what type of item, and what root URL to resolve it using">
+      <mat-option
+        *ngFor="let cur of types"
+        [value]="cur.name">{{cur.name}}</mat-option>
+    </mat-select>
   </mat-form-field>
 
-  <mat-form-field
-    *ngIf="canEditColumn('title')"
-    class="entity-edit-field">
-    <input
-      matInput
-      type="text"
-      placeholder="title"
-      [(ngModel)]="data.entity.title"
-      autocomplete="off">
-  </mat-form-field>
-
-  <mat-form-field
-    *ngIf="canEditColumn('content')"
-    class="entity-edit-field">
-    <input
-      matInput
-      type="text"
-      placeholder="content"
-      [(ngModel)]="data.entity.content"
-      autocomplete="off">
-  </mat-form-field>
+  <ngx-codemirror
+    *ngIf="shouldShow"
+    [(ngModel)]="data.entity.content"
+    [options]="{
+  lineNumbers: true,
+  theme: 'material',
+  mode: 'markdown'
+}"></ngx-codemirror>
 
 </div>
 

@@ -2,10 +2,11 @@
  * Magic Publishing is MIT licensed, copyright Thomas Hansen - thomas@servergardens.com - Se enclosed LICENSE files for terms of use
  */
 
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpService } from 'src/app/services/http-service';
+import { AuthService } from 'src/app/services/auth-service';
 
 /*
  * Input data to dialog.
@@ -25,7 +26,7 @@ export interface DialogData {
   templateUrl: './edit.items.component.html',
   styleUrls: ['./edit.items.component.scss']
 })
-export class EditItemsComponent {
+export class EditItemsComponent implements OnInit {
 
   /*
    * Only the following properties of the given data.entity will actually
@@ -35,6 +36,9 @@ export class EditItemsComponent {
   private createColumns: string[] = ['url', 'author', 'template', 'item_type', 'title', 'content'];
   private updateColumns: string[] = ['id', 'url', 'author', 'template', 'item_type', 'title', 'content'];
   private primaryKeys: string[] = ['id'];
+  public shouldShow = false;
+  public templates: any[] = [];
+  public types: any[] = [];
 
   /*
    * Constructor taking a bunch of services injected using dependency injection.
@@ -45,7 +49,22 @@ export class EditItemsComponent {
     private snackBar: MatSnackBar,
     private service: HttpService) { }
 
-  canEditColumn(name: string) {
+    ngOnInit() {
+
+      // Hack necessary to make sure CodeMirror functions correctly (due to animations).
+      setTimeout(() => { this.shouldShow = true; }, 200);
+
+      // Retrieving all templates in system.
+      this.service.templates_Get({}).subscribe(res => {
+        this.templates = res;
+      });
+      this.service.item_types_Get({}).subscribe(res => {
+        this.types = res;
+        console.log(res);
+      });
+    }
+
+    canEditColumn(name: string) {
     if (this.data.isEdit) {
       return this.updateColumns.filter(x => x === name).length > 0 &&
         this.primaryKeys.filter(x => x === name).length == 0;
