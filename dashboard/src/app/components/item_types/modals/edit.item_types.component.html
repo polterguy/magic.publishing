@@ -3,19 +3,8 @@
 <div mat-dialog-content>
 
   <mat-form-field
-    *ngIf="canEditColumn('name')"
-    class="entity-edit-field">
-    <input
-      matInput
-      type="text"
-      placeholder="name"
-      [(ngModel)]="data.entity.name"
-      autocomplete="off">
-  </mat-form-field>
-
-  <mat-form-field
     *ngIf="canEditColumn('root_resolve_url')"
-    class="entity-edit-field">
+    class="entity-edit-field-full-width">
     <input
       matInput
       type="text"
