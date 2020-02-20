@@ -10,6 +10,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import 'codemirror/mode/htmlmixed/htmlmixed';
 
 import { HttpService } from 'src/app/services/http-service';
 import { EditTemplatesComponent } from './modals/edit.templates.component';
