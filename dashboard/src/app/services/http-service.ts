@@ -39,7 +39,7 @@ export class HttpService {
       password,
     });
   }
-  
+
   // Creates QUERY arguments from the specified "args" argument given.
   getQueryArgs(args: any) {
     let result = '';
@@ -106,26 +106,6 @@ export class HttpService {
     return this.httpClient.get<any>(environment.apiUrl + 'magic/modules/magic/items-count' + this.getQueryArgs(args));
   }
 
-  roles_Delete(args: any) {
-    return this.httpClient.delete<any>(environment.apiUrl + 'magic/modules/magic/roles' + this.getQueryArgs(args));
-  }
-
-  roles_Get(args: any) {
-    return this.httpClient.get<any>(environment.apiUrl + 'magic/modules/magic/roles' + this.getQueryArgs(args));
-  }
-
-  roles_Post(args: any) {
-    return this.httpClient.post<any>(environment.apiUrl + 'magic/modules/magic/roles', args);
-  }
-
-  roles_Put(args: any) {
-    return this.httpClient.put<any>(environment.apiUrl + 'magic/modules/magic/roles', args);
-  }
-
-  roles_count_Get(args: any) {
-    return this.httpClient.get<any>(environment.apiUrl + 'magic/modules/magic/roles-count' + this.getQueryArgs(args));
-  }
-
   settings_Delete(args: any) {
     return this.httpClient.delete<any>(environment.apiUrl + 'magic/modules/magic/settings' + this.getQueryArgs(args));
   }
@@ -164,41 +144,5 @@ export class HttpService {
 
   templates_count_Get(args: any) {
     return this.httpClient.get<any>(environment.apiUrl + 'magic/modules/magic/templates-count' + this.getQueryArgs(args));
-  }
-
-  users_Delete(args: any) {
-    return this.httpClient.delete<any>(environment.apiUrl + 'magic/modules/magic/users' + this.getQueryArgs(args));
-  }
-
-  users_Get(args: any) {
-    return this.httpClient.get<any>(environment.apiUrl + 'magic/modules/magic/users' + this.getQueryArgs(args));
-  }
-
-  users_Post(args: any) {
-    return this.httpClient.post<any>(environment.apiUrl + 'magic/modules/magic/users', args);
-  }
-
-  users_Put(args: any) {
-    return this.httpClient.put<any>(environment.apiUrl + 'magic/modules/magic/users', args);
-  }
-
-  users_roles_Delete(args: any) {
-    return this.httpClient.delete<any>(environment.apiUrl + 'magic/modules/magic/users_roles' + this.getQueryArgs(args));
-  }
-
-  users_roles_Get(args: any) {
-    return this.httpClient.get<any>(environment.apiUrl + 'magic/modules/magic/users_roles' + this.getQueryArgs(args));
-  }
-
-  users_roles_Post(args: any) {
-    return this.httpClient.post<any>(environment.apiUrl + 'magic/modules/magic/users_roles', args);
-  }
-
-  users_roles_count_Get(args: any) {
-    return this.httpClient.get<any>(environment.apiUrl + 'magic/modules/magic/users_roles-count' + this.getQueryArgs(args));
-  }
-
-  users_count_Get(args: any) {
-    return this.httpClient.get<any>(environment.apiUrl + 'magic/modules/magic/users-count' + this.getQueryArgs(args));
   }
 }

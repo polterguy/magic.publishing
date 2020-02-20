@@ -31,8 +31,8 @@ export class AuthService {
     let query = '';
     if (filter !== null) {
       query += '?limit=' + filter.limit;
-      query += "&offset=" + filter.offset;
-      if (filter.filter !== null && filter.filter !== undefined && filter.filter != '') {
+      query += '&offset=' + filter.offset;
+      if (filter.filter !== null && filter.filter !== undefined && filter.filter !== '') {
         query += '&username.like=' + encodeURIComponent(filter.filter + '%');
       }
     }
@@ -57,8 +57,8 @@ export class AuthService {
     let query = '';
     if (filter !== null) {
       query += '?limit=' + filter.limit;
-      query += "&offset=" + filter.offset;
-      if (filter.filter !== null && filter.filter !== undefined && filter.filter != '') {
+      query += '&offset=' + filter.offset;
+      if (filter.filter !== null && filter.filter !== undefined && filter.filter !== '') {
         query += '&name.like=' + encodeURIComponent(filter.filter + '%');
       }
     }
@@ -97,14 +97,14 @@ export class AuthService {
   // Deletes an existing user.
   deleteUser(username: string) {
     return this.httpClient.delete<any>(
-      environment.apiUrl + 
+      environment.apiUrl +
       'magic/modules/magic/users?username=' + encodeURIComponent(username));
   }
 
   // Deletes an existing role.
   deleteRole(name: string) {
     return this.httpClient.delete<any>(
-      environment.apiUrl + 
+      environment.apiUrl +
       'magic/modules/magic/roles?name=' + encodeURIComponent(name));
   }
 
@@ -126,7 +126,7 @@ export class AuthService {
   // Removes a role fomr a user.
   deleteRoleFromUser(user: string, role: string) {
     return this.httpClient.delete<any>(
-      environment.apiUrl + 
+      environment.apiUrl +
       'magic/modules/magic/users_roles?role=' + encodeURIComponent(role) +
       '&user=' + encodeURIComponent(user));
   }

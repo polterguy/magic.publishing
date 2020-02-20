@@ -24,8 +24,8 @@ export class AuthComponent implements OnInit {
   private roleColumns: string[] = ['name', 'delete'];
   private users: any[] = null;
   private roles: any[] = null;
-  private userCount: number = 0;
-  private roleCount: number = 0;
+  private userCount = 0;
+  private roleCount = 0;
   private search: FormControl;
   private userFilter: AuthFilter = {
     limit: 10,
@@ -53,7 +53,7 @@ export class AuthComponent implements OnInit {
       });
   }
 
-  getUsers(callback: Function = null) {
+  getUsers(callback: () => void = null) {
     this.service.getUsers(this.userFilter).subscribe(res => {
       this.users = res;
       if (callback !== null) {
@@ -67,7 +67,7 @@ export class AuthComponent implements OnInit {
     });
   }
 
-  getRoles(callback: Function = null) {
+  getRoles(callback: () => void = null) {
     this.service.getRoles(this.roleFilter).subscribe(res => {
       this.roles = res;
       if (callback !== null) {
@@ -184,7 +184,7 @@ export class AuthComponent implements OnInit {
   }
 
   editUser(username: string) {
-    if (username === 'root') {
+    if (username === 'admin') {
       this.snackBar.open('Root user cannot be edited!', 'Close', {
         duration: 2000,
         panelClass: ['error-snackbar'],

@@ -28,7 +28,7 @@
       (click)="closeNavigator()"
       [routerLinkActiveOptions]="{exact:true}">
       <mat-icon matSuffix>grade</mat-icon>
-      <span class="menu-item-text">Item_types</span>
+      <span class="menu-item-text">Item types</span>
     </a>
     <a
       *ngIf="inRole(['admin'])"
@@ -40,17 +40,6 @@
       [routerLinkActiveOptions]="{exact:true}">
       <mat-icon matSuffix>grade</mat-icon>
       <span class="menu-item-text">Items</span>
-    </a>
-    <a
-      *ngIf="inRole(['admin'])"
-      mat-button
-      routerLink="/roles"
-      routerLinkActive="active-link"
-      class="menu-item"
-      (click)="closeNavigator()"
-      [routerLinkActiveOptions]="{exact:true}">
-      <mat-icon matSuffix>grade</mat-icon>
-      <span class="menu-item-text">Roles</span>
     </a>
     <a
       *ngIf="inRole(['admin'])"
@@ -75,17 +64,6 @@
       <span class="menu-item-text">Templates</span>
     </a>
     <a
-      *ngIf="inRole(['admin'])"
-      mat-button
-      routerLink="/users"
-      routerLinkActive="active-link"
-      class="menu-item"
-      (click)="closeNavigator()"
-      [routerLinkActiveOptions]="{exact:true}">
-      <mat-icon matSuffix>grade</mat-icon>
-      <span class="menu-item-text">Users</span>
-    </a>
-    <a
       *ngIf="inRole(['root','admin'])"
       mat-button
       routerLink="/auth"
@@ -99,13 +77,13 @@
     <a
       *ngIf="isLoggedIn()"
       mat-button
-      routerLink="/security"
+      routerLink="/profile"
       routerLinkActive="active-link"
       class="menu-item"
       (click)="closeNavigator()"
       [routerLinkActiveOptions]="{exact:true}">
       <mat-icon matSuffix>account_circle</mat-icon>
-      <span class="menu-item-text">Security</span>
+      <span class="menu-item-text">Profile</span>
     </a>
     <a
       *ngIf="isLoggedIn()"

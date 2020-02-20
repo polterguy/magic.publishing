@@ -88,8 +88,8 @@ CREATE TABLE `item_types` (
 /*
  * Inserting some few default item_types into our above table.
  */
-insert into item_types (name, root_resolve_url) values ('page', '/');
-insert into item_types (name, root_resolve_url) values ('article', '/articles/');
+insert into item_types (name, root_resolve_url) values ('page', '');
+insert into item_types (name, root_resolve_url) values ('article', 'articles');
 
 /*
  * Creating templates table, which contains the HTML templates for your content.
@@ -135,7 +135,7 @@ CREATE TABLE `items` (
 /*
  * Inserting default page into database.
  */
-insert into items (`url`, `author`, `template`, `item_type`, `title`, `content`) values ('/', 'admin', 'default', 'page', 'Hello World', '# Hello World
+insert into items (`url`, `author`, `template`, `item_type`, `title`, `content`) values ('', 'admin', 'default', 'page', 'Hello World', '# Hello World
 
 This is your first page. Feel free to edit it according to your needs.');
 

@@ -46,21 +46,17 @@ import { AuthComponent } from './components/auth/auth.component';
 import { CreateRoleDialogComponent } from './components/auth/modals/create-role-dialog';
 import { CreateUserDialogComponent } from './components/auth/modals/create-user-dialog';
 import { EditUserDialogComponent } from './components/auth/modals/edit-user-dialog';
-import { SecurityComponent } from './components/security/security.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 // CRUD wrapper components, both for the datagrid, and its associated editor/creator dialog.
 import { Item_typesComponent } from './components/item_types/item_types.component';
 import { EditItem_typesComponent } from './components/item_types/modals/edit.item_types.component';
 import { ItemsComponent } from './components/items/items.component';
 import { EditItemsComponent } from './components/items/modals/edit.items.component';
-import { RolesComponent } from './components/roles/roles.component';
-import { EditRolesComponent } from './components/roles/modals/edit.roles.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { EditSettingsComponent } from './components/settings/modals/edit.settings.component';
 import { TemplatesComponent } from './components/templates/templates.component';
 import { EditTemplatesComponent } from './components/templates/modals/edit.templates.component';
-import { UsersComponent } from './components/users/users.component';
-import { EditUsersComponent } from './components/users/modals/edit.users.component';
 
 
 // Helper to retrieve JWT token. Needed for "oauth0".
@@ -77,20 +73,16 @@ export function tokenGetter() {
     CreateRoleDialogComponent,
     CreateUserDialogComponent,
     EditUserDialogComponent,
-    SecurityComponent,
+    ProfileComponent,
     FormatDatePipe,
     Item_typesComponent,
     EditItem_typesComponent,
     ItemsComponent,
     EditItemsComponent,
-    RolesComponent,
-    EditRolesComponent,
     SettingsComponent,
     EditSettingsComponent,
     TemplatesComponent,
     EditTemplatesComponent,
-    UsersComponent,
-    EditUsersComponent,
   ],
   imports: [
     BrowserModule,
@@ -142,10 +134,8 @@ export function tokenGetter() {
     EditUserDialogComponent,
     EditItem_typesComponent,
     EditItemsComponent,
-    EditRolesComponent,
     EditSettingsComponent,
     EditTemplatesComponent,
-    EditUsersComponent,
   ]
 })
 export class AppModule { }
