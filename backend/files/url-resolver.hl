@@ -1,0 +1,5 @@
+
+/*
+ * Resolves a dynamic (non-CRUD) URL.
+ */
+http.response.status-code.set:404
