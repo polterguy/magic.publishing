@@ -88,8 +88,8 @@ CREATE TABLE `item_types` (
 /*
  * Inserting some few default item_types into our above table.
  */
-insert into item_types (name, root_resolve_url) values ('page', '/');
-insert into item_types (name, root_resolve_url) values ('article', '/articles/');
+insert into item_types (name, root_resolve_url) values ('page', '');
+insert into item_types (name, root_resolve_url) values ('article', 'articles');
 
 /*
  * Creating templates table, which contains the HTML templates for your content.

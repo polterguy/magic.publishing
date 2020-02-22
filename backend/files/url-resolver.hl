@@ -1,5 +1,26 @@
 
+
 /*
  * Resolves a dynamic (non-CRUD) URL.
+ *
+ * First creating a log entry.
  */
-http.response.status-code.set:404
+strings.concat
+   .:"URL '"
+   get-value:x:@.arguments/*/url
+   .:"' requested"
+log.info:x:-
+
+
+
+
+
+/*
+ * Invoking slot responsible for resolving our URL, and
+ * returning results (if any) from invocation - Making sure we
+ * pass in arguments to slot.
+ */
+add:x:../*/slots.signal
+   get-nodes:x:@.arguments/*
+slots.signal:magic.publishing.resolve-url
+slots.return-value:x:-
