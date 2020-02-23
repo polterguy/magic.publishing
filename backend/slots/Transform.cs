@@ -55,7 +55,7 @@ namespace backend.slots
             {
                 content = content.Replace(
                     "![[" + idx.Name + "]]!", 
-                    Convert.ToString(idx.Get<object>(), CultureInfo.CurrentUICulture));
+                    Convert.ToString(idx.Value, CultureInfo.CurrentUICulture));
             }
             return content;
         }
