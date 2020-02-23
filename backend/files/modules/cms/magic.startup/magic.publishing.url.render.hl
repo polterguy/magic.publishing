@@ -18,47 +18,39 @@ slots.create:magic.publishing.url.render
        */
       unwrap:x:+
       .page-url:x:@.arguments/*/url
-      .item-url:
+      .item-type-url:
 
       /*
-       * Defaulting [.url] to empty if not supplied.
+       * Not the default page, hence we must check to see what type of page
+       * was requested (item_type), and resolve accordingly.
        */
+      strings.split:x:@.arguments/*/url
+         .:/
       if
-         eq
-            get-value:x:@.page-url
-            .
+         mt
+            get-count:x:@strings.split/*
+            .:int:2
          .lambda
 
             /*
-             * Default page, empty URL.
+             * Unsupported URL.
              */
+            http.response.status-code.set:404
+            slots.return-value:
+
+      else-if
+         eq
+            get-count:x:@strings.split/*
+            .:int:2
+         .lambda
+
+            /*
+             * Item type was explicitly specified as part of URL.
+             */
+            set-value:x:@.item-type-url
+               get-value:x:@strings.split/0
             set-value:x:@.page-url
-               .:
-
-      else
-
-         /*
-          * Not the default page, hence we must check to see what type of page
-          * was requested (item_type), and resolve accordingly.
-          */
-         strings.split:x:@.arguments/*/url
-            .:/
-         if
-            mt
-               get-count:x:@strings.split/*
-               .:int:1
-            .lambda
-
-               /*
-                * Item type was explicitly specified as part of URL.
-                */
-               set-value:x:@.item-url
-                  get-value:x:@strings.split/0
-               remove-node:x:@strings.split/0
-               strings.join:x:@strings.split/*
-                  .:/
-               set-value:x:@.page-url
-                  get-value:x:@strings.join
+               get-value:x:@strings.split/1
 
       /*
        * Fetching item from database.
@@ -66,9 +58,9 @@ slots.create:magic.publishing.url.render
       mysql.select:@"select i.author, i.created, i.title, i.content, t.content as template from items i
     inner join item_types it on it.name = i.item_type
     inner join templates t on t.name = i.template
-    where i.url = @page and it.root_resolve_url=@item"
-         @page:x:@.page-url
-         @item:x:@.item-url
+    where i.url = @page_url and it.root_resolve_url=@item_type_url"
+         @page_url:x:@.page-url
+         @item_type_url:x:@.item-type-url
 
       /*
        * Checking that item actually exists.

@@ -2,6 +2,8 @@
 /*
  * Dynamic slot responsible for applying common settings
  * for URLs, such as Cache-Control headers, etc.
+ *
+ * Expects [date] argument, being the date when document was created.
  */
 slots.create:magic.publishing.url.settings.apply
 
