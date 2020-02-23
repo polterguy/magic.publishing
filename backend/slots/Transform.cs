@@ -7,7 +7,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Globalization;
 using Microsoft.Extensions.Configuration;
 using Markdig;
 using magic.node;
