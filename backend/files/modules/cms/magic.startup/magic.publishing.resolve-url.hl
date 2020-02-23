@@ -5,17 +5,21 @@
  */
 slots.create:magic.publishing.resolve-url
 
+   // Making sure we inform the client, and/or proxies, that item can be cached for 5 minutes.
+   http.response.headers.add
+      Cache-Control:public, max-age=300
+
    // Checking cache first.
-   cache.get:x:@.arguments/*/url
+   magic.publishing.cache.get:x:@.arguments/*/url
    if
       not
          eq
-            get-value:x:@cache.get
+            get-value:x:@magic.publishing.cache.get
             .
       .lambda
 
          // Item with specified URL exists in cache.
-         slots.return-value:x:@cache.get
+         slots.return-value:x:@magic.publishing.cache.get
 
    // Opening up our database connection.
    mysql.connect:[magic]
@@ -84,7 +88,7 @@ slots.create:magic.publishing.resolve-url
          magic.publishing.transform
 
          // Adding transformed content to cache.
-         cache.set:x:@.arguments/*/url
+         magic.publishing.cache.set:x:@.arguments/*/url
             get-value:x:@magic.publishing.transform
 
          // Returning results to caller.

@@ -15,7 +15,7 @@ namespace backend.slots
     /// <summary>
     /// [cache.set] slot for saving an item to the memory cache.
     /// </summary>
-    [Slot(Name = "cache.set")]
+    [Slot(Name = "magic.publishing.cache.set")]
     public class CacheSet : ISlot
     {
         IMemoryCache _memoryCache;

@@ -13,7 +13,7 @@ namespace backend.slots
     /// <summary>
     /// [cache.get] slot for returning an item from cache. Returns null if item doesn't exist.
     /// </summary>
-    [Slot(Name = "cache.get")]
+    [Slot(Name = "magic.publishing.cache.get")]
     public class CacheGet : ISlot
     {
         IMemoryCache _memoryCache;
