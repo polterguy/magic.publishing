@@ -3,9 +3,11 @@
  * See the enclosed LICENSE file for details.
  */
 
+using System;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Globalization;
 using Markdig;
 using magic.node;
 using magic.node.extensions;
@@ -51,7 +53,9 @@ namespace backend.slots
         {
             foreach (var idx in node.Children.Where(x => x.Name != "content"))
             {
-                content = content.Replace("![[" + idx.Name + "]]!", idx.Get<string>());
+                content = content.Replace(
+                    "![[" + idx.Name + "]]!", 
+                    Convert.ToString(idx.Get<object>(), CultureInfo.CurrentUICulture));
             }
             return content;
         }
