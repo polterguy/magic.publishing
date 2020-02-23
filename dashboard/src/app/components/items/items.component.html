@@ -9,7 +9,7 @@
       mat-button
       *ngIf="inRole(['admin', 'editor', 'author'])"
       class="top-right"
-      (click)="createNewRecord()">New ...</button>
+      (click)="createNewRecord()">New item ...</button>
 
     <table
       mat-table
@@ -62,7 +62,7 @@
       <ng-container matColumnDef="author">
         <th mat-header-cell *matHeaderCellDef>
           <mat-form-field appearance="outline" class="fill-width filter-textbox">
-            <mat-label>author</mat-label>
+            <mat-label>Author</mat-label>
             <input
               matInput
               placeholder="Filter ..."
@@ -77,7 +77,7 @@
             mat-button>
             <mat-icon matSuffix>{{getSortIcon('author')}}</mat-icon>
           </button>
-          <label class="table-header">author</label>
+          <label class="table-header">Author</label>
         </th>
         <td mat-cell (click)="toggleDetails(el)" *matCellDef="let el">{{el.author}}</td>
       </ng-container>
@@ -128,7 +128,7 @@
       <ng-container matColumnDef="created">
         <th mat-header-cell *matHeaderCellDef>
           <mat-form-field appearance="outline" class="fill-width filter-textbox">
-            <mat-label>created</mat-label>
+            <mat-label>Created</mat-label>
             <input
               matInput
               placeholder="Filter ..."
@@ -143,14 +143,14 @@
             mat-button>
             <mat-icon matSuffix>{{getSortIcon('created')}}</mat-icon>
           </button>
-          <label class="table-header">created</label>
+          <label class="table-header">Created</label>
         </th>
         <td mat-cell (click)="toggleDetails(el)" *matCellDef="let el">{{el.created | dateSince}}</td>
       </ng-container>
       <ng-container matColumnDef="title">
         <th mat-header-cell *matHeaderCellDef>
           <mat-form-field appearance="outline" class="fill-width filter-textbox">
-            <mat-label>title</mat-label>
+            <mat-label>Title</mat-label>
             <input
               matInput
               placeholder="Filter ..."
@@ -165,7 +165,7 @@
             mat-button>
             <mat-icon matSuffix>{{getSortIcon('title')}}</mat-icon>
           </button>
-          <label class="table-header">title</label>
+          <label class="table-header">Title</label>
         </th>
         <td mat-cell (click)="toggleDetails(el)" *matCellDef="let el">{{el.title}}</td>
       </ng-container>

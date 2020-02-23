@@ -58,11 +58,15 @@ export class EditItemsComponent implements OnInit {
     // Retrieving all templates in system.
     this.service.templates_Get({}).subscribe(res => {
       this.templates = res;
-      this.data.entity.template = this.templates[0].name;
+      if (!this.data.isEdit) {
+        this.data.entity.template = this.templates[0].name;
+      }
     });
     this.service.item_types_Get({}).subscribe(res => {
       this.types = res;
-      this.data.entity.item_type = this.types[0].name;
+      if (!this.data.isEdit) {
+        this.data.entity.item_type = this.types[0].name;
+      }
     });
     if (!this.data.isEdit) {
       const token = this.jwtHelper.decodeToken(localStorage.getItem('jwt_token'));

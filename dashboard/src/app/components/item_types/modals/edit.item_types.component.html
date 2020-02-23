@@ -1,6 +1,17 @@
 
-<h1 mat-dialog-title>{{data.isEdit ? 'Edit' : 'Create'}} Item_types</h1>
+<h1 mat-dialog-title>{{data.isEdit ? 'Edit' : 'Create'}} type</h1>
 <div mat-dialog-content>
+
+  <mat-form-field
+    *ngIf="canEditColumn('name')"
+    class="entity-edit-field-full-width">
+    <input
+      matInput
+      type="text"
+      placeholder="Name"
+      [(ngModel)]="data.entity.name"
+      autocomplete="off">
+  </mat-form-field>
 
   <mat-form-field
     *ngIf="canEditColumn('root_resolve_url')"
@@ -8,7 +19,7 @@
     <input
       matInput
       type="text"
-      placeholder="root_resolve_url"
+      placeholder="Root resolve URL"
       [(ngModel)]="data.entity.root_resolve_url"
       autocomplete="off">
   </mat-form-field>

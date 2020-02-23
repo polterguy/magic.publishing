@@ -9,7 +9,7 @@
       mat-button
       *ngIf="inRole(['admin'])"
       class="top-right"
-      (click)="createNewRecord()">New ...</button>
+      (click)="createNewRecord()">New setting ...</button>
 
     <table
       mat-table
@@ -18,7 +18,7 @@
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>
           <mat-form-field appearance="outline" class="fill-width filter-textbox">
-            <mat-label>name</mat-label>
+            <mat-label>Name</mat-label>
             <input
               matInput
               placeholder="Filter ..."
@@ -33,14 +33,14 @@
             mat-button>
             <mat-icon matSuffix>{{getSortIcon('name')}}</mat-icon>
           </button>
-          <label class="table-header">name</label>
+          <label class="table-header">Name</label>
         </th>
         <td mat-cell (click)="toggleDetails(el)" *matCellDef="let el">{{el.name}}</td>
       </ng-container>
       <ng-container matColumnDef="value">
         <th mat-header-cell *matHeaderCellDef>
           <mat-form-field appearance="outline" class="fill-width filter-textbox">
-            <mat-label>value</mat-label>
+            <mat-label>Value</mat-label>
             <input
               matInput
               placeholder="Filter ..."
@@ -55,7 +55,7 @@
             mat-button>
             <mat-icon matSuffix>{{getSortIcon('value')}}</mat-icon>
           </button>
-          <label class="table-header">value</label>
+          <label class="table-header">Value</label>
         </th>
         <td mat-cell (click)="toggleDetails(el)" *matCellDef="let el">{{el.value}}</td>
       </ng-container>

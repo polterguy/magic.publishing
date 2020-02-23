@@ -8,7 +8,7 @@
     <input
       matInput
       type="text"
-      placeholder="title"
+      placeholder="Title"
       (change)="titleChanged()"
       [(ngModel)]="data.entity.title"
       autocomplete="off">
@@ -32,7 +32,7 @@
       matInput
       type="text"
       disabled="true"
-      placeholder="author"
+      placeholder="Author"
       [(ngModel)]="data.entity.author"
       autocomplete="off">
   </mat-form-field>
@@ -41,7 +41,7 @@
     *ngIf="canEditColumn('template')"
     class="entity-edit-field">
     <mat-select
-      placeholder="Select template type"
+      placeholder="Template type"
       [(ngModel)]="data.entity.template"
       matTooltip="The template is the skin or theme for your item">
       <mat-option
@@ -54,7 +54,7 @@
     *ngIf="canEditColumn('item_type')"
     class="entity-edit-field">
     <mat-select
-      placeholder="Select item type"
+      placeholder="Item type"
       [(ngModel)]="data.entity.item_type"
       matTooltip="This decides what type of item, and what root URL to resolve it using">
       <mat-option

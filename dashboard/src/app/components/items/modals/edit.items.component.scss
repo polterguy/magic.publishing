@@ -5,7 +5,6 @@
 .entity-edit-field-full-width {
     width: calc(100% - 1rem);
     margin-right: 1rem;
-    text-transform: capitalize;
     display: inline-block;
 }
 
@@ -13,7 +12,6 @@
     .entity-edit-field {
         width: calc(50% - 1rem);
         margin-right: 1rem;
-        text-transform: capitalize;
         display: inline-block;
     }
 }
