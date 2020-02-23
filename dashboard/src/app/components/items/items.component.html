@@ -145,7 +145,7 @@
           </button>
           <label class="table-header">created</label>
         </th>
-        <td mat-cell (click)="toggleDetails(el)" *matCellDef="let el">{{el.created | formatDate}}</td>
+        <td mat-cell (click)="toggleDetails(el)" *matCellDef="let el">{{el.created | dateSince}}</td>
       </ng-container>
       <ng-container matColumnDef="title">
         <th mat-header-cell *matHeaderCellDef>

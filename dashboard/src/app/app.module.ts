@@ -36,6 +36,7 @@ import { AppComponent } from './app.component';
 import { LoaderService } from './services/loader-service';
 import { LoaderInterceptor } from './services/loader-interceptor';
 import { FormatDatePipe } from './pipes/format-date-pipe';
+import { DateSincePipe } from './pipes/date-since-pipe';
 import { environment } from 'src/environments/environment';
 
 // All components. First all "global" components.
@@ -74,6 +75,7 @@ export function tokenGetter() {
     EditUserDialogComponent,
     ProfileComponent,
     FormatDatePipe,
+    DateSincePipe,
     ItemTypesComponent,
     EditItem_typesComponent,
     ItemsComponent,

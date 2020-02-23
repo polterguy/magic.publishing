@@ -126,7 +126,7 @@ CREATE TABLE `items` (
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `title` varchar(512),
   `content` longtext,
-  UNIQUE KEY `url_UNIQUE` (`url`),
+  UNIQUE KEY `url_UNIQUE` (`url`, `item_type`),
   CONSTRAINT `author_fky` FOREIGN KEY (`author`) REFERENCES `users` (`username`),
   CONSTRAINT `item_type_fky` FOREIGN KEY (`item_type`) REFERENCES `item_types` (`name`),
   CONSTRAINT `template_fky` FOREIGN KEY (`template`) REFERENCES `templates` (`name`),
