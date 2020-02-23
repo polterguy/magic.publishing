@@ -11,90 +11,106 @@ slots.create:magic.publishing.url.render
    mysql.connect:[magic_publishing]
 
       /*
-       * Creating parameters for our SQL.
+       * Fetching item from cache.
        */
-      unwrap:x:+
-      .page-url:x:@.arguments/*/url
-      .item-type-url:
+      magic.publishing.cache:x:@.arguments/*/url
 
-      /*
-       * Splitting segments of URL.
-       */
-      strings.split:x:@.arguments/*/url
-         .:/
+         /*
+          * Creating parameters for our SQL.
+          */
+         unwrap:x:+
+         .page-url:x:@.arguments/*/url
+         .item-type-url:
 
-      /*
-       * Checking if we have a sub-folder in our URL,
-       * implying an explicit (non-default) item_type.
-       */
-      if
-         mt
-            get-count:x:@strings.split/*
-            .:int:2
-         .lambda
+         /*
+          * Splitting segments of URL.
+          */
+         strings.split:x:@.arguments/*/url
+            .:/
 
-            /*
-             * Unsupported URL, too may segments.
-             */
-            http.response.status-code.set:404
-            slots.return-value:
+         /*
+          * Checking if we have a sub-folder in our URL,
+          * implying an explicit (non-default) item_type.
+          */
+         if
+            mt
+               get-count:x:@strings.split/*
+               .:int:2
+            .lambda
 
-      else-if
-         eq
-            get-count:x:@strings.split/*
-            .:int:2
-         .lambda
+               /*
+                * Unsupported URL, too may segments.
+                */
+               slots.return-nodes
+                  status:int:404
 
-            /*
-             * Item type was explicitly specified as non-default type,
-             * in the specified URL.
-             */
-            set-value:x:@.item-type-url
-               get-value:x:@strings.split/0
-            set-value:x:@.page-url
-               get-value:x:@strings.split/1
+         else-if
+            eq
+               get-count:x:@strings.split/*
+               .:int:2
+            .lambda
 
-      /*
-       * Fetching item from database.
-       */
-      mysql.select:@"select i.author, i.created, i.updated, i.title, i.content, t.content as template from items i
+               /*
+                * Item type was explicitly specified as non-default type,
+                * in the specified URL.
+                */
+               set-value:x:@.item-type-url
+                  get-value:x:@strings.split/0
+               set-value:x:@.page-url
+                  get-value:x:@strings.split/1
+
+         /*
+          * Fetching item from database.
+          */
+         mysql.select:@"select i.author, i.created, i.updated, i.title, i.content, t.content as template from items i
     inner join item_types it on it.name = i.item_type
     inner join templates t on t.name = i.template
     where i.url = @page_url and it.root_resolve_url=@item_type_url"
-         @page_url:x:@.page-url
-         @item_type_url:x:@.item-type-url
+            @page_url:x:@.page-url
+            @item_type_url:x:@.item-type-url
 
-      /*
-       * Checking that item actually exists.
-       */
-      if
-         eq
-            get-count:x:@mysql.select/*
-            .:int:0
-         .lambda
+         /*
+          * Checking that item actually exists.
+          */
+         if
+            eq
+               get-count:x:@mysql.select/*
+               .:int:0
+            .lambda
+
+               /*
+                * Item was not found in database.
+                */
+               slots.return-nodes
+                  status:int:404
+
+         else
 
             /*
-             * Item was not found in database.
+             * Page exists, invoking slot responsible for transforming page into valid output.
              */
-            http.response.status-code.set:404
+            add:x:./*/magic.publishing.transform
+               get-nodes:x:@mysql.select/*/*
+            magic.publishing.transform
 
-      else
+            /*
+             * Returning results to caller.
+             */
+            unwrap:x:+/*
+            slots.return-nodes
+               status:int:200
+               content:x:@magic.publishing.transform
+               date:x:@mysql.select/*/*/updated
 
-         /*
-          * Page exists, invoking slot responsible for transforming page into valid output.
-          */
-         add:x:./*/magic.publishing.transform
-            get-nodes:x:@mysql.select/*/*
-         magic.publishing.transform
+      /*
+       * Applying global/common settings.
+       */
+      unwrap:x:+/*
+      slots.signal:magic.publishing.url.settings.apply
+         date:x:@magic.publishing.cache/*/date
+         status:x:@magic.publishing.cache/*/status
 
-         /*
-          * Applying global/common settings.
-          */
-         unwrap:x:+/*
-         slots.signal:magic.publishing.url.settings.apply
-            date:x:@mysql.select/*/*/updated
-
-         /*
-          * Returning results to caller.
-          */
-         slots.return-value:x:@magic.publishing.transform
+      /*
+       * Returning content to caller.
+       */
+      slots.return-value:x:@magic.publishing.cache/*/content
