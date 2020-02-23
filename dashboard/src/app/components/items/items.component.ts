@@ -34,7 +34,9 @@ export class ItemsComponent implements OnInit {
 
   // Current filter being applied to filter items from our backend.
   public filter: any = {
-    limit: 10
+    limit: 10,
+    order: 'created',
+    direction: 'desc',
   };
 
   // Number of items our backend reports are available in total, matching our above filter condition.
