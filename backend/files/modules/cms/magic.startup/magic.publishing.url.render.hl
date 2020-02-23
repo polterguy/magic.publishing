@@ -13,94 +13,97 @@ slots.create:magic.publishing.url.render
       /*
        * Fetching item from cache.
        */
+      magic.publishing.settings.get:caching
       magic.publishing.cache:x:@.arguments/*/url
+         seconds:x:@magic.publishing.settings.get
+         .lambda
 
-         /*
-          * Creating parameters for our SQL.
-          */
-         unwrap:x:+
-         .page-url:x:@.arguments/*/url
-         .item-type-url:
+            /*
+             * Creating parameters for our SQL.
+             */
+            unwrap:x:+
+            .page-url:x:@.arguments/*/url
+            .item-type-url:
 
-         /*
-          * Splitting segments of URL.
-          */
-         strings.split:x:@.arguments/*/url
-            .:/
+            /*
+             * Splitting segments of URL.
+             */
+            strings.split:x:@.arguments/*/url
+               .:/
 
-         /*
-          * Checking if we have a sub-folder in our URL,
-          * implying an explicit (non-default) item_type.
-          */
-         if
-            mt
-               get-count:x:@strings.split/*
-               .:int:2
-            .lambda
+            /*
+             * Checking if we have a sub-folder in our URL,
+             * implying an explicit (non-default) item_type.
+             */
+            if
+               mt
+                  get-count:x:@strings.split/*
+                  .:int:2
+               .lambda
 
-               /*
-                * Unsupported URL, too may segments.
-                */
-               slots.return-nodes
-                  status:int:404
+                  /*
+                   * Unsupported URL, too may segments.
+                   */
+                  slots.return-nodes
+                     status:int:404
 
-         else-if
-            eq
-               get-count:x:@strings.split/*
-               .:int:2
-            .lambda
+            else-if
+               eq
+                  get-count:x:@strings.split/*
+                  .:int:2
+               .lambda
 
-               /*
-                * Item type was explicitly specified as non-default type,
-                * in the specified URL.
-                */
-               set-value:x:@.item-type-url
-                  get-value:x:@strings.split/0
-               set-value:x:@.page-url
-                  get-value:x:@strings.split/1
+                  /*
+                   * Item type was explicitly specified as non-default type,
+                   * in the specified URL.
+                   */
+                  set-value:x:@.item-type-url
+                     get-value:x:@strings.split/0
+                  set-value:x:@.page-url
+                     get-value:x:@strings.split/1
 
-         /*
-          * Fetching item from database.
-          */
-         mysql.select:@"select i.author, i.created, i.updated, i.title, i.content, t.content as template from items i
+            /*
+             * Fetching item from database.
+             */
+            mysql.select:@"select i.author, i.created, i.updated, i.title, i.content, t.content as template from items i
     inner join item_types it on it.name = i.item_type
     inner join templates t on t.name = i.template
     where i.url = @page_url and it.root_resolve_url=@item_type_url"
-            @page_url:x:@.page-url
-            @item_type_url:x:@.item-type-url
+               @page_url:x:@.page-url
+               @item_type_url:x:@.item-type-url
 
-         /*
-          * Checking that item actually exists.
-          */
-         if
-            eq
-               get-count:x:@mysql.select/*
-               .:int:0
-            .lambda
+            /*
+             * Checking that item actually exists.
+             */
+            if
+               eq
+                  get-count:x:@mysql.select/*
+                  .:int:0
+               .lambda
+
+                  /*
+                   * Item was not found in database.
+                   */
+                  slots.return-nodes
+                     status:int:404
+
+            else
 
                /*
-                * Item was not found in database.
+                * Page exists, invoking slot responsible for transforming page into valid output.
                 */
+               add:x:./*/magic.publishing.transform
+                  get-nodes:x:@mysql.select/*/*
+               magic.publishing.transform
+
+               /*
+                * Returning results to caller.
+                */
+               unwrap:x:+/*
                slots.return-nodes
-                  status:int:404
-
-         else
-
-            /*
-             * Page exists, invoking slot responsible for transforming page into valid output.
-             */
-            add:x:./*/magic.publishing.transform
-               get-nodes:x:@mysql.select/*/*
-            magic.publishing.transform
-
-            /*
-             * Returning results to caller.
-             */
-            unwrap:x:+/*
-            slots.return-nodes
-               status:int:200
-               content:x:@magic.publishing.transform
-               date:x:@mysql.select/*/*/updated
+                  status:int:200
+                  content:x:@magic.publishing.transform
+                  date:x:@mysql.select/*/*/updated
 
       /*
        * Applying global/common settings.

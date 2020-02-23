@@ -3,6 +3,7 @@
  * See the enclosed LICENSE file for details.
  */
 
+using System;
 using System.Linq;
 using Microsoft.Extensions.Caching.Memory;
 using magic.node;
@@ -45,9 +46,12 @@ namespace backend.slots
                 var evalResult = new Node();
                 signaler.Scope("slots.result", evalResult, () =>
                 {
-                    signaler.Signal("eval", input);
+                    signaler.Signal("eval", input.Children.First(x => x.Name == ".lambda"));
                 });
-                _memoryCache.Set(key, evalResult);
+                _memoryCache.Set(
+                    key,
+                    evalResult,
+                    DateTimeOffset.Now.AddSeconds(input.Children.FirstOrDefault(x => x.Name == "seconds")?.GetEx<int>() ?? 5));
                 input.Clear();
                 input.AddRange(evalResult.Children.Select(x => x.Clone()));
                 input.Value = evalResult.Value;
