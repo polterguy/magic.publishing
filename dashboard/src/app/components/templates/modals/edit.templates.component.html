@@ -2,6 +2,17 @@
 <h1 mat-dialog-title>{{data.isEdit ? "Edit '" + data.entity.name + "' template" : 'Create template'}}</h1>
 <div mat-dialog-content>
 
+  <mat-form-field
+    *ngIf="canEditColumn('name')"
+    class="entity-edit-field-full-width">
+    <input
+      matInput
+      type="text"
+      placeholder="Name"
+      [(ngModel)]="data.entity.name"
+      autocomplete="off">
+  </mat-form-field>
+
   <ngx-codemirror
     *ngIf="shouldShow"
     [(ngModel)]="data.entity.content"

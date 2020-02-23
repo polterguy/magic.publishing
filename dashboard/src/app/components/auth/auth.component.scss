@@ -56,6 +56,12 @@
     }
 }
 
+.roles-grid {
+    tr.mat-row:hover {
+        background-color: rgba(0,0,0,.1);
+    }
+}
+
 @media screen and (min-width: 800px) {
     .auth-flex-grid {
         display: flex;

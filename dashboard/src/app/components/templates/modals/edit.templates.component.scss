@@ -8,6 +8,12 @@
     display: inline-block;
 }
 
+.entity-edit-field-full-width {
+    width: calc(100% - 1rem);
+    margin-right: 1rem;
+    display: inline-block;
+}
+
 @media screen and (min-width: 800px) {
     .entity-edit-field {
         width: calc(50% - 1rem);

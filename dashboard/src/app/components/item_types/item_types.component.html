@@ -72,6 +72,7 @@
           [ngClass]="inRole(['admin']) ? 'delete-column' : 'hidden'">
           <button
             mat-button
+            [disabled]="el.name === 'page'"
             (click)="delete(el, {name: el.name})"
             placeholder="Deletes this record">
             <mat-icon matSuffix>delete</mat-icon>
