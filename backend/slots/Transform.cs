@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Globalization;
+using Microsoft.Extensions.Configuration;
 using Markdig;
 using magic.node;
 using magic.node.extensions;
@@ -23,6 +24,13 @@ namespace backend.slots
     [Slot(Name = "magic.publishing.transform")]
     public class Transform : ISlot
     {
+        IConfiguration _configuration;
+
+        public Transform(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         /// <summary>
         /// Implementation of signal
         /// </summary>
@@ -30,20 +38,18 @@ namespace backend.slots
         /// <param name="input">Parameters passed from signaler</param>
         public void Signal(ISignaler signaler, Node input)
         {
+            // Retrieving and unrolling any plugins and arguments found in [template].
             var template = input.Children.First(x => x.Name == "template").Get<string>();
+            template = UnrollArguments(input, template);
+            template = UnrollPlugins(signaler, template, input, false);
+
+            // Retrieving and unrolling any plugins found in [content].
             var content = input.Children.First(x => x.Name == "content").Get<string>();
-            var title = input.Children.First(x => x.Name == "title").Get<string>();
-            var author = input.Children.First(x => x.Name == "author").Get<string>();
-            var created = input.Children.First(x => x.Name == "created").Get<DateTime>();
+            content = UnrollArguments(input, content);
+            content = UnrollPlugins(signaler, content, input, true);
 
-            // Unrolling any plugins found in [content].
-            content = UnrollPlugins(signaler, content);
-
-            // Transforming content and template.
+            // Replacing content in template with item's content.
             var result = template.Replace("![[content]]!", content);
-            result = result.Replace("![[title]]!", title);
-            result = result.Replace("![[author]]!", author);
-            result = result.Replace("![[created]]!", created.ToString("dddd d. MMM HH:mm", CultureInfo.InvariantCulture));
 
             // Returning results to caller.
             input.Value = result;
@@ -51,10 +57,23 @@ namespace backend.slots
 
         #region [ -- Private helper methods -- ]
 
+        string UnrollArguments(Node node, string content)
+        {
+            foreach (var idx in node.Children.Where(x => x.Name != "content"))
+            {
+                content = content.Replace("![[" + idx.Name + "]]!", idx.Get<string>());
+            }
+            return content;
+        }
+
         /*
          * Unrolls plugins referenced in specified content.
          */
-        string UnrollPlugins(ISignaler signaler, string content)
+        string UnrollPlugins(
+            ISignaler signaler, 
+            string content, 
+            Node node,
+            bool isMarkdown)
         {
             var result = new StringBuilder();
             var buffer = new StringBuilder();
@@ -68,8 +87,13 @@ namespace backend.slots
                         /*
                          * Hyperlambda content, reading until we find the end of it, parsing, 
                          * evaluating, and adding results of evaluation into buffer.
+                         *
+                         * Making sure we first append content found so far in StringReader.
                          */
-                        result.Append(Markdown.ToHtml(buffer.ToString()));
+                        if (isMarkdown)
+                            result.Append(Markdown.ToHtml(buffer.ToString()));
+                        else
+                            result.Append(buffer.ToString());
                         buffer.Clear();
                         line = reader.ReadLine(); // Discarding opening "![[" parts.
                         while(line != "]]!")
@@ -78,6 +102,7 @@ namespace backend.slots
                             line = reader.ReadLine();
                         }
                         var lambda = new Parser(buffer.ToString()).Lambda();
+                        lambda.Add(new Node(".arguments", null, node.Children.Select(x => x.Clone())));
                         buffer.Clear();
                         var evalResult = new Node();
                         signaler.Scope("slots.result", evalResult, () =>
@@ -93,7 +118,10 @@ namespace backend.slots
                     }
                     line = reader.ReadLine();
                 }
-                result.Append(Markdown.ToHtml(buffer.ToString()));
+                if (isMarkdown)
+                    result.Append(Markdown.ToHtml(buffer.ToString()));
+                else
+                    result.Append(buffer.ToString());
             }
             return result.ToString();
         }
