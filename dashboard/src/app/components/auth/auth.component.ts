@@ -185,7 +185,7 @@ export class AuthComponent implements OnInit {
 
   editUser(username: string) {
     if (username === 'admin') {
-      this.snackBar.open('Root user cannot be edited!', 'Close', {
+      this.snackBar.open('Admin user cannot be edited!', 'Close', {
         duration: 2000,
         panelClass: ['error-snackbar'],
       });
