@@ -9,7 +9,7 @@ auth.ticket.verify:admin, editor, author
 add:x:./*/wait.slots.signal/*/values
    get-nodes:x:@.arguments/*
 wait.slots.signal:magic.db.mysql.create
-   database:magic
+   database:magic_publishing
    table:items
    return-id:bool:true
    values

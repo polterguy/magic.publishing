@@ -13,12 +13,12 @@ using magic.signals.contracts;
 namespace backend.slots
 {
     /// <summary>
-    /// [cache.set] slot for saving an item to the memory cache.
+    /// [magic.publishing.cache.set] slot for saving an item to the memory cache.
     /// </summary>
     [Slot(Name = "magic.publishing.cache.set")]
     public class CacheSet : ISlot
     {
-        IMemoryCache _memoryCache;
+        readonly IMemoryCache _memoryCache;
 
         public CacheSet(IMemoryCache memoryCache)
         {
@@ -32,9 +32,6 @@ namespace backend.slots
         /// <param name="input">Parameters passed from signaler</param>
         public void Signal(ISignaler signaler, Node input)
         {
-            if (input.Children.Count() > 1)
-                throw new ApplicationException("[cache.set] must have maximum one child");
-
             var key = input.GetEx<string>() ?? "";
 
             if (input.Children.Any())
@@ -43,7 +40,8 @@ namespace backend.slots
                 _memoryCache.Set(
                     key,
                     input.Children.First().GetEx<object>(),
-                    DateTimeOffset.Now.AddMinutes(5));
+                    DateTimeOffset.Now.AddSeconds(
+                        input.Children.Skip(1).FirstOrDefault()?.GetEx<int>() ?? 60));
             }
             else
             {

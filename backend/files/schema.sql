@@ -2,8 +2,8 @@
 /*
  * Creating Magic database.
  */
-CREATE DATABASE `magic`;
-USE `magic`;
+CREATE DATABASE `magic_publishing`;
+USE `magic_publishing`;
 
 
 
@@ -159,3 +159,8 @@ CREATE TABLE `settings` (
   PRIMARY KEY (`name`),
   UNIQUE KEY `name_UNIQUE` (`name`)
 );
+
+/*
+ * Inserting default settings into database.
+ */
+insert into settings (`name`, `value`) values ('caching', '60');

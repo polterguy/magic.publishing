@@ -9,7 +9,7 @@ add:x:./*/wait.slots.signal/*/values
    get-nodes:x:@.arguments/*
 unwrap:x:+/*/ids/*
 wait.slots.signal:magic.db.mysql.update
-   database:magic
+   database:magic_publishing
    table:users
    values
    ids

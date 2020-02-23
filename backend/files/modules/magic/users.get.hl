@@ -14,7 +14,7 @@ auth.ticket.verify:admin
 add:x:./*/wait.slots.signal/*/args
    get-nodes:x:@.arguments/*
 wait.slots.signal:magic.db.mysql.read
-   database:magic
+   database:magic_publishing
    table:users
    args
    columns

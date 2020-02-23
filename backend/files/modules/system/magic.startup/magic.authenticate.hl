@@ -23,7 +23,7 @@ slots.create:magic.authenticate
    /*
     * Opens up our database connection.
     */
-   mysql.connect:[magic]
+   mysql.connect:[magic_publishing]
 
 
       /*

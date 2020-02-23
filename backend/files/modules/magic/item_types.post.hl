@@ -5,7 +5,7 @@ auth.ticket.verify:admin
 add:x:./*/wait.slots.signal/*/values
    get-nodes:x:@.arguments/*
 wait.slots.signal:magic.db.mysql.create
-   database:magic
+   database:magic_publishing
    table:item_types
    return-id:bool:false
    values

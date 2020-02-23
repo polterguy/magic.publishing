@@ -1,102 +1,160 @@
 
 /*
- * Dynamic slot responsible for serving a URL.
- * Expects an optional [url] argument.
+ * Dynamic slot responsible for retrieving an item given an optional [url].
+ *
+ * If no [url] is given, the item with empty URL will be returned.
  */
 slots.create:magic.publishing.resolve-url
-
-   // Making sure we inform the client, and/or proxies, that item can be cached for 5 minutes.
-   http.response.headers.add
-      Cache-Control:public, max-age=300
-
-   /*
-    * Checking cache first.
-    */
-   magic.publishing.cache.get:x:@.arguments/*/url
-   if
-      not
-         eq
-            get-value:x:@magic.publishing.cache.get
-            .
-      .lambda
-
-         // Item with specified URL exists in cache.
-         slots.return-value:x:@magic.publishing.cache.get
-
 
    /*
     * Opening up our database connection.
     */
-   mysql.connect:[magic]
+   mysql.connect:[magic_publishing]
 
-      // Creating parameters necessary to fetch item from database.
-      unwrap:x:+
-      .page-url:x:@.arguments/*/url
-      .item-url:
+      /*
+       * Retrieving cache setting.
+       */
+      magic.publishing.settings.get:caching
 
-      // Defaulting [.url] to empty if not supplied.
+      /*
+       * Making sure we inform the client, and/or proxies, that item can be cached for x seconds.
+       */
+      strings.concat
+         .:public, max-age=
+         get-value:x:@magic.publishing.settings.get
+      http.response.headers.add
+         Cache-Control:x:@strings.concat
+
+      /*
+       * Retrieving item's actual content.
+       * Checking if item exists in cache first.
+       */
+      magic.publishing.cache.get:x:@.arguments/*/url
       if
-         eq
-            get-value:x:@.page-url
-            .
+         not
+            eq
+               get-value:x:@magic.publishing.cache.get
+               .
          .lambda
 
-            // Default page, empty URL.
-            set-value:x:@.page-url
-               .:
+            /*
+             * Item with specified URL exists in cache.
+             */
+            slots.return-value:x:@magic.publishing.cache.get
 
-      else
+      /*
+       * Notice, to prevent multiple threads to try to retrieve item,
+       * and populate our cache simultaneously, we'll need to create a thread lock
+       * here, and check if item exists in cache again, after lock has been released.
+       */
+      magic.publishing.thread.lock:retrieve-item-from-database
 
          /*
-          * Not the default page, hence we must check to see what type of page
-          * was requested (item_type), and resolve accordingly.
+          * Then after lock has been release, we need to check cache again,
+          * in case another thread was able to populate cache before lock was released.
           */
-         strings.split:x:@.arguments/*/url
-            .:/
+         magic.publishing.cache.get:x:@.arguments/*/url
          if
-            mt
-               get-count:x:@strings.split/*
-               .:int:1
+            not
+               eq
+                  get-value:x:@magic.publishing.cache.get
+                  .
             .lambda
 
-               // Item type was explicitly specified as part of URL.
-               set-value:x:@.item-url
-                  get-value:x:@strings.split/0
-               remove-node:x:@strings.split/0
-               strings.join:x:@strings.split/*
-                  .:/
-               set-value:x:@.page-url
-                  get-value:x:@strings.join
+               /*
+                * Item with specified URL exists in cache.
+                */
+               slots.return-value:x:@magic.publishing.cache.get
 
-      // Fetching item from database.
-      mysql.select:@"select i.author, i.created, i.title, i.content, t.content as template from items i
+         /*
+          * Now we know for a fact that we have to retrieve actual item from database.
+          *
+          * First creating parameters necessary to fetch item from database.
+          */
+         unwrap:x:+
+         .page-url:x:@.arguments/*/url
+         .item-url:
+
+         /*
+          * Defaulting [.url] to empty if not supplied.
+          */
+         if
+            eq
+               get-value:x:@.page-url
+               .
+            .lambda
+
+               // Default page, empty URL.
+               set-value:x:@.page-url
+                  .:
+
+         else
+
+            /*
+             * Not the default page, hence we must check to see what type of page
+             * was requested (item_type), and resolve accordingly.
+             */
+            strings.split:x:@.arguments/*/url
+               .:/
+            if
+               mt
+                  get-count:x:@strings.split/*
+                  .:int:1
+               .lambda
+
+                  /*
+                   * Item type was explicitly specified as part of URL.
+                   */
+                  set-value:x:@.item-url
+                     get-value:x:@strings.split/0
+                  remove-node:x:@strings.split/0
+                  strings.join:x:@strings.split/*
+                     .:/
+                  set-value:x:@.page-url
+                     get-value:x:@strings.join
+
+         /*
+          * Fetching item from database.
+          */
+         mysql.select:@"select i.author, i.created, i.title, i.content, t.content as template from items i
     inner join item_types it on it.name = i.item_type
     inner join templates t on t.name = i.template
     where i.url = @page and it.root_resolve_url=@item"
-         @page:x:@.page-url
-         @item:x:@.item-url
+            @page:x:@.page-url
+            @item:x:@.item-url
 
-      // Checking that item actually exists.
-      if
-         eq
-            get-count:x:@mysql.select/*
-            .:int:0
-         .lambda
+         /*
+          * Checking that item actually exists.
+          */
+         if
+            eq
+               get-count:x:@mysql.select/*
+               .:int:0
+            .lambda
 
-            // Not found
-            http.response.status-code.set:404
-      else
+               /*
+                * Item was not found in database.
+                */
+               http.response.status-code.set:404
+         else
 
-         // Page exists, invoking slot responsible for transforming page into valid output.
-         add:x:./*/magic.publishing.transform
-            get-nodes:x:@mysql.select/*/*
-         magic.publishing.transform
+            /*
+             * Page exists, invoking slot responsible for transforming page into valid output.
+             */
+            add:x:./*/magic.publishing.transform
+               get-nodes:x:@mysql.select/*/*
+            magic.publishing.transform
 
-         // Adding transformed content to cache.
-         magic.publishing.cache.set:x:@.arguments/*/url
-            get-value:x:@magic.publishing.transform
+            /*
+             * Adding transformed content to cache.
+             */
+            magic.publishing.cache.set:x:@.arguments/*/url
+               get-value:x:@magic.publishing.transform
+               get-value:x:@magic.publishing.settings.get
 
-         // Returning results to caller.
-         slots.return-value:x:@magic.publishing.transform
+            /*
+             * Returning results to caller.
+             */
+            slots.return-value:x:@magic.publishing.transform
 
 

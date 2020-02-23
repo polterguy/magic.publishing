@@ -4,7 +4,7 @@ auth.ticket.verify:admin, editor
 add:x:./*/wait.slots.signal/*/ids
    get-nodes:x:@.arguments/*
 wait.slots.signal:magic.db.mysql.delete
-   database:magic
+   database:magic_publishing
    table:items
    ids
 slots.return-nodes:x:@wait.slots.signal/*

@@ -11,12 +11,12 @@ using magic.signals.contracts;
 namespace backend.slots
 {
     /// <summary>
-    /// [cache.get] slot for returning an item from cache. Returns null if item doesn't exist.
+    /// [magic.publishing.cache.get] slot for returning an item from cache. Returns null if item doesn't exist.
     /// </summary>
     [Slot(Name = "magic.publishing.cache.get")]
     public class CacheGet : ISlot
     {
-        IMemoryCache _memoryCache;
+        readonly IMemoryCache _memoryCache;
 
         public CacheGet(IMemoryCache memoryCache)
         {

@@ -17,7 +17,7 @@ auth.ticket.verify:admin, author, editor
 add:x:./*/wait.slots.signal/*/args
    get-nodes:x:@.arguments/*
 wait.slots.signal:magic.db.mysql.read
-   database:magic
+   database:magic_publishing
    table:templates
    args
       limit:long:1
