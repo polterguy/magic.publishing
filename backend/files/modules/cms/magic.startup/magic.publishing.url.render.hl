@@ -11,9 +11,13 @@ slots.create:magic.publishing.url.render
    mysql.connect:[magic_publishing]
 
       /*
-       * Fetching item from cache.
+       * Figuring out from settings for how long items should be cached.
        */
       magic.publishing.settings.get:caching
+
+      /*
+       * Fetching item from cache.
+       */
       magic.publishing.cache:x:@.arguments/*/url
          seconds:x:@magic.publishing.settings.get
          .lambda
@@ -45,7 +49,6 @@ slots.create:magic.publishing.url.render
                    * Unsupported URL, too may segments.
                    */
                   slots.return-nodes
-                     status:int:404
 
             else-if
                eq
@@ -85,7 +88,6 @@ slots.create:magic.publishing.url.render
                    * Item was not found in database.
                    */
                   slots.return-nodes
-                     status:int:404
 
             else
 
@@ -103,17 +105,32 @@ slots.create:magic.publishing.url.render
                slots.return-nodes
                   status:int:200
                   content:x:@magic.publishing.transform
-                  date:x:@mysql.select/*/*/updated
+                  Last-Modified:x:@mysql.select/*/*/updated
 
       /*
-       * Applying global/common settings.
+       * Checking if nothing was returned from cache, at which
+       * point it's a 404 request.
        */
-      unwrap:x:+/*
-      slots.signal:magic.publishing.url.settings.apply
-         date:x:@magic.publishing.cache/*/date
-         status:x:@magic.publishing.cache/*/status
+      if
+         not
+            exists:x:@magic.publishing.cache/*
+         .lambda
 
-      /*
-       * Returning content to caller.
-       */
-      slots.return-value:x:@magic.publishing.cache/*/content
+            /*
+             * 404 request.
+             */
+            http.response.status-code.set:404
+
+      else
+
+         /*
+          * Applying global/common settings.
+          */
+         unwrap:x:+/*
+         slots.signal:magic.publishing.url.settings.apply
+            Last-Modified:x:@magic.publishing.cache/*/Last-Modified
+
+         /*
+          * Returning content to caller.
+          */
+         slots.return-value:x:@magic.publishing.cache/*/content

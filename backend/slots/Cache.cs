@@ -48,13 +48,20 @@ namespace backend.slots
                 {
                     signaler.Signal("eval", input.Children.First(x => x.Name == ".lambda"));
                 });
-                _memoryCache.Set(
-                    key,
-                    evalResult,
-                    DateTimeOffset.Now.AddSeconds(input.Children.FirstOrDefault(x => x.Name == "seconds")?.GetEx<int>() ?? 5));
                 input.Clear();
-                input.AddRange(evalResult.Children.Select(x => x.Clone()));
-                input.Value = evalResult.Value;
+                if (evalResult.Value != null || evalResult.Children.Any())
+                {
+                    _memoryCache.Set(
+                        key,
+                        evalResult,
+                        DateTimeOffset.Now.AddSeconds(input.Children.FirstOrDefault(x => x.Name == "seconds")?.GetEx<int>() ?? 5));
+                    input.AddRange(evalResult.Children.Select(x => x.Clone()));
+                    input.Value = evalResult.Value;
+                }
+                else
+                {
+                    input.Value = null;
+                }
             }
         }
     }
