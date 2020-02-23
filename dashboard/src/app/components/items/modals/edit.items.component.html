@@ -20,6 +20,7 @@
     <input
       matInput
       type="text"
+      [disabled]="data.isEdit"
       placeholder="URL"
       [(ngModel)]="data.entity.url"
       autocomplete="off">
@@ -55,6 +56,7 @@
     class="entity-edit-field">
     <mat-select
       placeholder="Item type"
+      [disabled]="data.isEdit"
       [(ngModel)]="data.entity.item_type"
       matTooltip="This decides what type of item, and what root URL to resolve it using">
       <mat-option
