@@ -1,8 +1,7 @@
 
 /*
- * Dynamic slot responsible for retrieving an item given an optional [url].
- *
- * If no [url] is given, the item with empty URL will be returned.
+ * Dynamic slot responsible for retrieving an item according
+ * to the given [url].
  */
 slots.create:magic.publishing.url.render
 
@@ -12,20 +11,22 @@ slots.create:magic.publishing.url.render
    mysql.connect:[magic_publishing]
 
       /*
-       * Retrieving our actual item from our database.
-       *
-       * First creating parameters necessary to fetch item from database.
+       * Creating parameters for our SQL.
        */
       unwrap:x:+
       .page-url:x:@.arguments/*/url
       .item-type-url:
 
       /*
-       * Not the default page, hence we must check to see what type of page
-       * was requested (item_type), and resolve accordingly.
+       * Splitting segments of URL.
        */
       strings.split:x:@.arguments/*/url
          .:/
+
+      /*
+       * Checking if we have a sub-folder in our URL,
+       * implying an explicit (non-default) item_type.
+       */
       if
          mt
             get-count:x:@strings.split/*
@@ -33,7 +34,7 @@ slots.create:magic.publishing.url.render
          .lambda
 
             /*
-             * Unsupported URL.
+             * Unsupported URL, too may segments.
              */
             http.response.status-code.set:404
             slots.return-value:
@@ -45,7 +46,8 @@ slots.create:magic.publishing.url.render
          .lambda
 
             /*
-             * Item type was explicitly specified as part of URL.
+             * Item type was explicitly specified as non-default type,
+             * in the specified URL.
              */
             set-value:x:@.item-type-url
                get-value:x:@strings.split/0

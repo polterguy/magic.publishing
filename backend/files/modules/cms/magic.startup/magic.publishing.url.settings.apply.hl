@@ -3,12 +3,12 @@
  * Dynamic slot responsible for applying common settings
  * for URLs, such as Cache-Control headers, etc.
  *
- * Expects [date] argument, being the date when document was created.
+ * Expects [date] argument, being the date when document was last modified.
  */
 slots.create:magic.publishing.url.settings.apply
 
    /*
-    * Applying "Cache-Control" and "Date" headers to response object.
+    * Applying "Cache-Control" and "Last-Modified" headers to response object.
     */
    magic.publishing.date.format:x:@.arguments/*/date
    magic.publishing.settings.get:caching
@@ -17,4 +17,4 @@ slots.create:magic.publishing.url.settings.apply
       get-value:x:@magic.publishing.settings.get
    http.response.headers.add
       Cache-Control:x:@strings.concat
-      Date:x:@magic.publishing.date.format
+      Last-Modified:x:@magic.publishing.date.format
