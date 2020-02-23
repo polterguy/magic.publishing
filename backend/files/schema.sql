@@ -124,6 +124,7 @@ CREATE TABLE `items` (
   `template` varchar(50) NOT NULL,
   `item_type` varchar(50) NOT NULL,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `title` varchar(512),
   `content` longtext,
   UNIQUE KEY `url_UNIQUE` (`url`, `item_type`),

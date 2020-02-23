@@ -57,7 +57,7 @@ slots.create:magic.publishing.url.render
       /*
        * Fetching item from database.
        */
-      mysql.select:@"select i.author, i.created, i.title, i.content, t.content as template from items i
+      mysql.select:@"select i.author, i.created, i.updated, i.title, i.content, t.content as template from items i
     inner join item_types it on it.name = i.item_type
     inner join templates t on t.name = i.template
     where i.url = @page_url and it.root_resolve_url=@item_type_url"
@@ -92,7 +92,7 @@ slots.create:magic.publishing.url.render
           */
          unwrap:x:+/*
          slots.signal:magic.publishing.url.settings.apply
-            date:x:@mysql.select/*/*/created
+            date:x:@mysql.select/*/*/updated
 
          /*
           * Returning results to caller.
