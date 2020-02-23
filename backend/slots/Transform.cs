@@ -3,11 +3,9 @@
  * See the enclosed LICENSE file for details.
  */
 
-using System;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Microsoft.Extensions.Configuration;
 using Markdig;
 using magic.node;
 using magic.node.extensions;
@@ -23,13 +21,6 @@ namespace backend.slots
     [Slot(Name = "magic.publishing.transform")]
     public class Transform : ISlot
     {
-        IConfiguration _configuration;
-
-        public Transform(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
         /// <summary>
         /// Implementation of signal
         /// </summary>

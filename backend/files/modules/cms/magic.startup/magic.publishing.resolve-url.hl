@@ -5,6 +5,18 @@
  */
 slots.create:magic.publishing.resolve-url
 
+   // Checking cache first.
+   cache.get:x:@.arguments/*/url
+   if
+      not
+         eq
+            get-value:x:@cache.get
+            .
+      .lambda
+
+         // Item with specified URL exists in cache.
+         slots.return-value:x:@cache.get
+
    // Opening up our database connection.
    mysql.connect:[magic]
 
@@ -70,6 +82,10 @@ slots.create:magic.publishing.resolve-url
          add:x:./*/magic.publishing.transform
             get-nodes:x:@mysql.select/*/*
          magic.publishing.transform
+
+         // Adding transformed content to cache.
+         cache.set:x:@.arguments/*/url
+            get-value:x:@magic.publishing.transform
 
          // Returning results to caller.
          slots.return-value:x:@magic.publishing.transform
