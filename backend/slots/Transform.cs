@@ -99,10 +99,9 @@ namespace backend.slots
                         lambda.Add(new Node(".arguments", null, node.Children.Select(x => x.Clone())));
                         buffer.Clear();
                         var evalResult = new Node();
-                        signaler.Scope("slots.result", evalResult, () =>
-                        {
-                            signaler.Signal("eval", lambda);
-                        });                        
+                        signaler.Scope(
+                            "slots.result",
+                            evalResult, () => signaler.Signal("eval", lambda));
                         result.Append(evalResult.Get<string>());
                     }
                     else

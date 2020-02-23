@@ -22,7 +22,7 @@ namespace backend.slots
     public class Cache : ISlot
     {
         readonly IMemoryCache _memoryCache;
-        readonly static SemaphoreSlim _semaphore = new SemaphoreSlim(4);
+        readonly static SemaphoreSlim _semaphore = new SemaphoreSlim(8);
 
         public Cache(IMemoryCache memoryCache)
         {
@@ -43,8 +43,9 @@ namespace backend.slots
                 /*
                  * Making sure no more than max number of threads can
                  * execute code simultaneously. This is to avoid hundreds of
-                 * simultaneous threads trying to access the same document at the same
-                 * time, before cache has been validated, resulting in exhausting the server.
+                 * simultaneous threads trying to access the database, and/or the same
+                 * document at the same time, before cache has been validated,
+                 * resulting in exhausting the server.
                  */
                 _semaphore.Wait();
                 try
@@ -54,10 +55,10 @@ namespace backend.slots
                     {
                         // Evaluating [.lambda] to retrieve item to cache and return to caller.
                         var evalResult = new Node();
-                        signaler.Scope("slots.result", evalResult, () =>
-                        {
-                            signaler.Signal("eval", input.Children.First(x => x.Name == ".lambda"));
-                        });
+                        signaler.Scope(
+                            "slots.result",
+                            evalResult,
+                            () => signaler.Signal("eval", input.Children.First(x => x.Name == ".lambda")));
 
                         // Clearing lambda and value.
                         input.Clear();
