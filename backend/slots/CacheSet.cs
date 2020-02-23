@@ -41,7 +41,7 @@ namespace backend.slots
                     key,
                     input.Children.First().GetEx<object>(),
                     DateTimeOffset.Now.AddSeconds(
-                        input.Children.Skip(1).FirstOrDefault()?.GetEx<int>() ?? 60));
+                        input.Children.Skip(1).FirstOrDefault()?.GetEx<int>() ?? 5));
             }
             else
             {
