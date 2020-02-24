@@ -230,7 +230,7 @@ body {
   min-height: calc(100% - 2rem);
   margin: 1rem auto 1rem auto;
   box-sizing: border-box;
-  padding: 2rem;
+  padding: 2rem 2rem 4rem 2rem;
   border-radius: .5rem;
   position: relative;
 }
@@ -276,9 +276,9 @@ td {
 }
 .copyright {
   position: absolute;
-  bottom: .5rem;
+  bottom: 1rem;
   font-size: .8rem;
-  color: #a0a0a0;
+  color: #c0c0c0;
   text-align: center;
   width: 100%;
 }
