@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Globalization;
+using System.Threading.Tasks;
 using Markdig;
 using magic.node;
 using magic.node.extensions;
@@ -21,7 +22,8 @@ namespace backend.slots
     /// applying [content] and other parameters, into the specified [template].
     /// </summary>
     [Slot(Name = "magic.publishing.transform")]
-    public class Transform : ISlot
+    [Slot(Name = "wait.magic.publishing.transform")]
+    public class Transform : ISlot, ISlotAsync
     {
         /// <summary>
         /// Implementation of signal
@@ -39,6 +41,32 @@ namespace backend.slots
             var content = input.Children.First(x => x.Name == "content").Get<string>();
             content = UnrollArguments(input, content);
             content = UnrollPlugins(signaler, content, input, true);
+
+            // Replacing content in template with item's content.
+            var result = template.Replace("![[content]]!", content);
+
+            // Returning results to caller.
+            input.Value = result;
+        }
+
+
+        /// <summary>
+        /// Handles the signal for the class.
+        /// </summary>
+        /// <param name="signaler">Signaler used to signal the slot.</param>
+        /// <param name="input">Root node for invocation.</param>
+        /// <returns>An awaitable task.</returns>
+        public async Task SignalAsync(ISignaler signaler, Node input)
+        {
+            // Retrieving and unrolling any plugins and arguments found in [template].
+            var template = input.Children.First(x => x.Name == "template").Get<string>();
+            template = UnrollArguments(input, template);
+            template = await UnrollPluginsAsync(signaler, template, input, false);
+
+            // Retrieving and unrolling any plugins found in [content].
+            var content = input.Children.First(x => x.Name == "content").Get<string>();
+            content = UnrollArguments(input, content);
+            content = await UnrollPluginsAsync(signaler, content, input, true);
 
             // Replacing content in template with item's content.
             var result = template.Replace("![[content]]!", content);
@@ -101,7 +129,68 @@ namespace backend.slots
                         var evalResult = new Node();
                         signaler.Scope(
                             "slots.result",
-                            evalResult, () => signaler.Signal("eval", lambda));
+                            evalResult,
+                            () => signaler.Signal("eval", lambda));
+                        result.Append(evalResult.Get<string>());
+                    }
+                    else
+                    {
+                        // Normal content.
+                        buffer.Append(line).Append("\r\n");
+                    }
+                    line = reader.ReadLine();
+                }
+                if (isMarkdown)
+                    result.Append(Markdown.ToHtml(buffer.ToString()));
+                else
+                    result.Append(buffer.ToString());
+            }
+            return result.ToString();
+        }
+
+        /*
+         * Unrolls plugins referenced in specified content.
+         */
+        async Task<string> UnrollPluginsAsync(
+            ISignaler signaler, 
+            string content, 
+            Node node,
+            bool isMarkdown)
+        {
+            var result = new StringBuilder();
+            var buffer = new StringBuilder();
+            using (var reader = new StringReader(content))
+            {
+                var line = reader.ReadLine();
+                while(line != null)
+                {
+                    if (line == "![[")
+                    {
+                        /*
+                         * Hyperlambda content, reading until we find the end of it, parsing, 
+                         * evaluating, and adding results of evaluation into buffer.
+                         *
+                         * Making sure we first append content found so far in StringReader.
+                         */
+                        if (isMarkdown)
+                            result.Append(Markdown.ToHtml(buffer.ToString()));
+                        else
+                            result.Append(buffer.ToString());
+                        buffer.Clear();
+                        line = reader.ReadLine(); // Discarding opening "![[" parts.
+                        while(line != "]]!")
+                        {
+                            buffer.Append(line).Append("\r\n");
+                            line = reader.ReadLine();
+                        }
+                        var lambda = new Parser(buffer.ToString()).Lambda();
+                        lambda.Add(new Node(".arguments", null, node.Children.Select(x => x.Clone())));
+                        buffer.Clear();
+                        var evalResult = new Node();
+                        await signaler.ScopeAsync(
+                            "slots.result",
+                            evalResult,
+                            async () => await signaler.SignalAsync("eval", lambda));
                         result.Append(evalResult.Get<string>());
                     }
                     else

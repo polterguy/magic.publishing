@@ -6,6 +6,7 @@
 using System;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using magic.node;
 using magic.node.extensions;
@@ -19,10 +20,17 @@ namespace backend.slots
     /// and then returns the item.
     /// </summary>
     [Slot(Name = "magic.publishing.cache")]
-    public class Cache : ISlot
+    [Slot(Name = "wait.magic.publishing.cache")]
+    public class Cache : ISlot, ISlotAsync
     {
+        /*
+         * Notice, we only allow one thread to fetch data from database at the same time.
+         * This might sound stupid, until you realise every page is agressively cached,
+         * and we don't want to have multiple threads fetching the same document, and
+         * putting it into our cache.
+         */
+        readonly static SemaphoreSlim _semaphore = new SemaphoreSlim(1);
         readonly IMemoryCache _memoryCache;
-        readonly static SemaphoreSlim _semaphore = new SemaphoreSlim(8);
 
         public Cache(IMemoryCache memoryCache)
         {
@@ -59,6 +67,65 @@ namespace backend.slots
                             "slots.result",
                             evalResult,
                             () => signaler.Signal("eval", input.Children.First(x => x.Name == ".lambda")));
+
+                        // Clearing lambda and value.
+                        input.Clear();
+                        input.Value = null;
+
+                        /*
+                        * Checking to see if anything was returned at all,
+                        * and if not, we don't store anything into our cache.
+                        */
+                        if (evalResult.Value != null || evalResult.Children.Any())
+                        {
+                            _memoryCache.Set(
+                                key,
+                                evalResult,
+                                DateTimeOffset.Now.AddSeconds(
+                                    input.Children.FirstOrDefault(x => x.Name == "seconds")?.GetEx<int>() ?? 5));
+                            input.AddRange(evalResult.Children.Select(x => x.Clone()));
+                            input.Value = evalResult.Value;
+                        }
+                    }
+                }
+                finally
+                {
+                    _semaphore.Release();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Handles the signal for the class.
+        /// </summary>
+        /// <param name="signaler">Signaler used to signal the slot.</param>
+        /// <param name="input">Root node for invocation.</param>
+        /// <returns>An awaitable task.</returns>
+        public async Task SignalAsync(ISignaler signaler, Node input)
+        {
+            // Checking cache first.
+            var key = input.GetEx<string>();
+            if (!GetFromCache(key, input))
+            {
+                /*
+                 * Making sure no more than max number of threads can
+                 * execute code simultaneously. This is to avoid hundreds of
+                 * simultaneous threads trying to access the database, and/or the same
+                 * document at the same time, before cache has been validated,
+                 * resulting in exhausting the server.
+                 */
+                await _semaphore.WaitAsync();
+                try
+                {
+                    // Double checking, in case another thread was able to retrieve content first.
+                    if (!GetFromCache(key, input))
+                    {
+                        // Evaluating [.lambda] to retrieve item to cache and return to caller.
+                        var evalResult = new Node();
+                        await signaler.ScopeAsync(
+                            "slots.result",
+                            evalResult,
+                            async () => await signaler.SignalAsync("eval", input.Children.First(x => x.Name == ".lambda")));
 
                         // Clearing lambda and value.
                         input.Clear();

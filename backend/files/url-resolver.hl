@@ -7,7 +7,7 @@
  * returning results (if any) from invocation - Making sure we
  * pass in arguments to slot.
  */
-add:x:../*/slots.signal
+add:x:../*/wait.slots.signal
    get-nodes:x:@.arguments/*
-slots.signal:magic.publishing.url.render
+wait.slots.signal:magic.publishing.url.render
 slots.return-value:x:-

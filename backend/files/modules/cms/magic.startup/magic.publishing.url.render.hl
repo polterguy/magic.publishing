@@ -8,17 +8,17 @@ slots.create:magic.publishing.url.render
    /*
     * Opening up our database connection.
     */
-   mysql.connect:[magic_publishing]
+   wait.mysql.connect:[magic_publishing]
 
       /*
        * Figuring out from settings for how long items should be cached.
        */
-      magic.publishing.settings.get:caching
+      wait.magic.publishing.settings.get:caching
 
       /*
        * Fetching item from cache.
        */
-      magic.publishing.cache:x:@.arguments/*/url
+      wait.magic.publishing.cache:x:@.arguments/*/url
          seconds:x:@magic.publishing.settings.get
          .lambda
 
@@ -68,7 +68,7 @@ slots.create:magic.publishing.url.render
             /*
              * Fetching item from database.
              */
-            mysql.select:@"select i.author, i.created, i.updated, i.title, i.content, t.content as template from items i
+            wait.mysql.select:@"select i.author, i.created, i.updated, i.title, i.content, t.content as template from items i
     inner join item_types it on it.name = i.item_type
     inner join templates t on t.name = i.template
     where i.url = @page_url and it.root_resolve_url=@item_type_url"
@@ -80,7 +80,7 @@ slots.create:magic.publishing.url.render
              */
             if
                eq
-                  get-count:x:@mysql.select/*
+                  get-count:x:@wait.mysql.select/*
                   .:int:0
                .lambda
 
@@ -89,14 +89,14 @@ slots.create:magic.publishing.url.render
                    */
                   slots.return-nodes
 
-            else
+            wait.else
 
                /*
                 * Page exists, invoking slot responsible for transforming page into valid output.
                 */
-               add:x:./*/magic.publishing.transform
-                  get-nodes:x:@mysql.select/*/*
-               magic.publishing.transform
+               add:x:./*/wait.magic.publishing.transform
+                  get-nodes:x:@wait.mysql.select/*/*
+               wait.magic.publishing.transform
 
                /*
                 * Returning results to caller.
@@ -104,8 +104,8 @@ slots.create:magic.publishing.url.render
                unwrap:x:+/*
                slots.return-nodes
                   status:int:200
-                  content:x:@magic.publishing.transform
-                  Last-Modified:x:@mysql.select/*/*/updated
+                  content:x:@wait.magic.publishing.transform
+                  Last-Modified:x:@wait.mysql.select/*/*/updated
 
       /*
        * Checking if nothing was returned from cache, at which
@@ -113,7 +113,7 @@ slots.create:magic.publishing.url.render
        */
       if
          not
-            exists:x:@magic.publishing.cache/*
+            exists:x:@wait.magic.publishing.cache/*
          .lambda
 
             /*
@@ -121,16 +121,16 @@ slots.create:magic.publishing.url.render
              */
             http.response.status-code.set:404
 
-      else
+      wait.else
 
          /*
           * Applying global/common settings.
           */
          unwrap:x:+/*
-         slots.signal:magic.publishing.url.settings.apply
-            Last-Modified:x:@magic.publishing.cache/*/Last-Modified
+         wait.slots.signal:wait.magic.publishing.url.settings.apply
+            Last-Modified:x:@wait.magic.publishing.cache/*/Last-Modified
 
          /*
           * Returning content to caller.
           */
-         slots.return-value:x:@magic.publishing.cache/*/content
+         slots.return-value:x:@wait.magic.publishing.cache/*/content
