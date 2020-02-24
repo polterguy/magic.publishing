@@ -214,36 +214,48 @@ textarea {
   margin: 0;
   padding: 0;
   border: 0;
+  font-family: 'Roboto';
 }
 body {
-  font: 62.5%/1.5  "Lucida Grande", "Lucida Sans", Tahoma, Verdana, sans-serif;
   color: #000000;
-  text-align:center;
+  text-align: center;
+  font-family: 'Roboto';
+  background-color: #f0f0f0;
 }
 #wrapper {
-  width:980px;
-  text-align:left;
-  margin-left:auto;
-  margin-right:auto;
-  background-color: #FFFFFF;
+  width: 80%;
+  max-width: 980px;
+  text-align: left;
+  background-color: #ffffff;
+  min-height: calc(100% - 2rem);
+  margin: 1rem auto 1rem auto;
+  box-sizing: border-box;
+  padding: 2rem;
+  border-radius: .5rem;
+  position: relative;
 }
 h1 {
-  font-size: 3.2em;
+  text-align: center;
+  font-size: 2.2em;
 }
 h2 {
-  font-size: 3.0em;
+  text-align: center;
+  font-size: 2.0em;
 }
 h3 {
-  font-size: 2.8em;
+  text-align: center;
+  font-size: 1.8em;
 }
 h4 {
-  font-size: 2.6em;
+  text-align: center;
+  font-size: 1.6em;
 } 
 h5 {
-  font-size: 2.4em;
+  text-align: center;
+  font-size: 1.4em;
 }
 p {
-  font-size: 1.6em;
+  font-size: 1.2em;
 }
 .clear {
   clear:both;
@@ -261,4 +273,12 @@ table {
 td {
   text-align: left;
   font-weight: normal;
+}
+.copyright {
+  position: absolute;
+  bottom: .5rem;
+  font-size: .8rem;
+  color: #a0a0a0;
+  text-align: center;
+  width: 100%;
 }
