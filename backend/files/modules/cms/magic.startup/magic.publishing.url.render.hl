@@ -1,7 +1,10 @@
 
 /*
- * Dynamic slot responsible for retrieving an item according
- * to the given [url].
+ * Dynamic slot responsible for retrieving an item according to the given [url].
+ *
+ * Will return the dynamically rendered document, and return it to caller as value.
+ * In addition, it will apply some HTTP headers to the response object, according to
+ * settings, and properties from document itself.
  */
 slots.create:magic.publishing.url.render
 
@@ -123,7 +126,7 @@ slots.create:magic.publishing.url.render
              */
             http.response.status-code.set:404
 
-      wait.else
+      else
 
          /*
           * Applying global/common settings.
