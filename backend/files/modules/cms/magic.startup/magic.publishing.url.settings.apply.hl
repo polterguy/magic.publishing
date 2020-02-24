@@ -14,7 +14,7 @@ slots.create:wait.magic.publishing.url.settings.apply
    wait.magic.publishing.settings.get:caching
    strings.concat
       .:public, max-age=
-      get-value:x:@magic.publishing.settings.get
+      get-value:x:@wait.magic.publishing.settings.get
    http.response.headers.add
       Cache-Control:x:@strings.concat
       Last-Modified:x:@magic.publishing.date.format
