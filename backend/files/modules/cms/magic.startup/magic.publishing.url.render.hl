@@ -19,7 +19,7 @@ slots.create:magic.publishing.url.render
        * Fetching item from cache.
        */
       wait.magic.publishing.cache:x:@.arguments/*/url
-         seconds:x:@magic.publishing.settings.get
+         seconds:x:@wait.magic.publishing.settings.get
          .lambda
 
             /*
@@ -128,9 +128,13 @@ slots.create:magic.publishing.url.render
          /*
           * Applying global/common settings.
           */
+         strings.concat
+            .:"public, max-age="
+            get-value:x:@wait.magic.publishing.settings.get
          unwrap:x:+/*
-         wait.slots.signal:wait.magic.publishing.url.settings.apply
+         slots.signal:magic.publishing.url.settings.apply
             Last-Modified:x:@wait.magic.publishing.cache/*/Last-Modified
+            Cache-Control:x:@strings.concat
 
          /*
           * Returning content to caller.

@@ -163,5 +163,6 @@ CREATE TABLE `settings` (
 
 /*
  * Inserting default settings into database.
+ * Notice, we're caching dynamic documents for 5 minutes by default.
  */
-insert into settings (`name`, `value`) values ('caching', '60');
+insert into settings (`name`, `value`) values ('caching', '300');

@@ -3,18 +3,19 @@
  * Dynamic slot responsible for applying common settings
  * for URLs, such as Cache-Control headers, etc.
  *
- * Expects [Last-Modified] argument, being the date when document was last modified.
+ * Expects [Last-Modified] argument and Cache-Control, being the date
+ * when document was last modified, and for how many seconds document
+ * should be cached by client.
  */
-slots.create:wait.magic.publishing.url.settings.apply
+slots.create:magic.publishing.url.settings.apply
 
    /*
     * Found, applying HTTP headers.
     */
    magic.publishing.date.format:x:@.arguments/*/Last-Modified
-   wait.magic.publishing.settings.get:caching
    strings.concat
       .:public, max-age=
       get-value:x:@wait.magic.publishing.settings.get
    http.response.headers.add
-      Cache-Control:x:@strings.concat
+      Cache-Control:x:@.arguments/*/Cache-Control
       Last-Modified:x:@magic.publishing.date.format
