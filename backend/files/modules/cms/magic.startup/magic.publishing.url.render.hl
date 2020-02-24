@@ -88,6 +88,7 @@ slots.create:magic.publishing.url.render
                    * Item was not found in database.
                    */
                   slots.return-nodes
+                     status:int:404
 
             wait.else
 
@@ -112,8 +113,9 @@ slots.create:magic.publishing.url.render
        * point it's a 404 request.
        */
       if
-         not
-            exists:x:@wait.magic.publishing.cache/*
+         eq
+            get-value:x:@wait.magic.publishing.cache/*/status
+            .:int:404
          .lambda
 
             /*
