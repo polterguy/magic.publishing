@@ -21,7 +21,7 @@ namespace backend.slots
     /// </summary>
     [Slot(Name = "magic.publishing.cache")]
     [Slot(Name = "wait.magic.publishing.cache")]
-    public class Cache : ISlot, ISlotAsync
+    public class Cache : ISlotAsync
     {
         /*
          * Limiting number of threads that can simultaneously execute its lambda
@@ -33,64 +33,6 @@ namespace backend.slots
         public Cache(IMemoryCache memoryCache)
         {
             _memoryCache = memoryCache;
-        }
-
-        /// <summary>
-        /// Implementation of signal
-        /// </summary>
-        /// <param name="signaler">Signaler used to signal</param>
-        /// <param name="input">Parameters passed from signaler</param>
-        public void Signal(ISignaler signaler, Node input)
-        {
-            // Checking cache first.
-            var key = input.GetEx<string>();
-            if (!GetFromCache(key, input))
-            {
-                /*
-                 * Making sure no more than max number of threads can
-                 * execute code simultaneously. This is to avoid hundreds of
-                 * simultaneous threads trying to access the database, and/or the same
-                 * document at the same time, before cache has been validated,
-                 * resulting in exhausting the server.
-                 */
-                _semaphore.Wait();
-                try
-                {
-                    // Double checking, in case another thread was able to retrieve content first.
-                    if (!GetFromCache(key, input))
-                    {
-                        // Evaluating [.lambda] to retrieve item to cache and return to caller.
-                        var evalResult = new Node();
-                        signaler.Scope(
-                            "slots.result",
-                            evalResult,
-                            () => signaler.Signal("eval", input.Children.First(x => x.Name == ".lambda")));
-
-                        // Clearing lambda and value.
-                        input.Clear();
-                        input.Value = null;
-
-                        /*
-                        * Checking to see if anything was returned at all,
-                        * and if not, we don't store anything into our cache.
-                        */
-                        if (evalResult.Value != null || evalResult.Children.Any())
-                        {
-                            _memoryCache.Set(
-                                key,
-                                evalResult,
-                                DateTimeOffset.Now.AddSeconds(
-                                    input.Children.FirstOrDefault(x => x.Name == "seconds")?.GetEx<int>() ?? 5));
-                            input.AddRange(evalResult.Children.Select(x => x.Clone()));
-                            input.Value = evalResult.Value;
-                        }
-                    }
-                }
-                finally
-                {
-                    _semaphore.Release();
-                }
-            }
         }
 
         /// <summary>
