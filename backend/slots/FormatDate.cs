@@ -4,6 +4,7 @@
  */
 
 using System;
+using System.Linq;
 using magic.node;
 using magic.node.extensions;
 using magic.signals.contracts;
@@ -23,7 +24,10 @@ namespace backend.slots
         /// <param name="input">Parameters passed from signaler</param>
         public void Signal(ISignaler signaler, Node input)
         {
-            input.Value = input.GetEx<DateTime>().ToUniversalTime().ToString("r");
+            input.Value = input.GetEx<DateTime>()
+                .ToUniversalTime()
+                .ToString(input.Children.FirstOrDefault()?.GetEx<string>() ?? "r");
+            input.Clear();
         }
     }
 }

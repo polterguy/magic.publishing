@@ -19,7 +19,7 @@ namespace backend.slots
     /// </summary>
     [Slot(Name = "magic.publishing.settings.get")]
     [Slot(Name = "wait.magic.publishing.settings.get")]
-    public class SettingGet : ISlot, ISlotAsync
+    public class SettingGet : ISlotAsync
     {
         readonly IMemoryCache _memoryCache;
         readonly static SemaphoreSlim _semaphore = new SemaphoreSlim(1);
@@ -28,47 +28,6 @@ namespace backend.slots
         public SettingGet(IMemoryCache memoryCache)
         {
             _memoryCache = memoryCache;
-        }
-
-        /// <summary>
-        /// Implementation of signal.
-        /// </summary>
-        /// <param name="signaler">Signaler used to signal.</param>
-        /// <param name="input">Parameters passed from signaler.</param>
-        public void Signal(ISignaler signaler, Node input)
-        {
-            // Retrieving name of setting to retrieve.
-            var key = input.GetEx<string>() ?? "";
-
-            // Trying to fetch setting from cache.
-            input.Value = TryGetCache(key, out bool hasCache);
-
-            // Checking that settings exists in cache, and if not, populating it.
-            if (!hasCache)
-            {
-                // Avoiding having multiple threads trying to populate cache.
-                _semaphore.Wait();
-                try
-                {
-                    // Double checking to avoid race conditions.
-                    input.Value = TryGetCache(key, out hasCache);
-                    if (hasCache)
-                        return; // Some other thread filled up our cache for us.
-
-                    // Settings still not in cache, loading settings and putting it into cache.
-                    var node = new Node("mysql.select", "select * from settings");
-                    signaler.Signal("mysql.select", node);
-                    _memoryCache.Set(
-                        _cacheKey,
-                        node,
-                        DateTimeOffset.Now.AddMinutes(5));
-                    input.Value = TryGetCache(key, out hasCache);
-                }
-                finally
-                {
-                    _semaphore.Release();
-                }
-            }
         }
 
         /// <summary>
@@ -82,40 +41,44 @@ namespace backend.slots
             // Retrieving name of setting to retrieve.
             var key = input.GetEx<string>() ?? "";
 
-            // Trying to fetch setting from cache.
-            input.Value = TryGetCache(key, out bool hasCache);
-
             // Checking that settings exists in cache, and if not, populating it.
-            if (!hasCache)
+            if (TryGetCache(key, out string cachedValue))
             {
-                // Avoiding having multiple threads trying to populate cache.
-                await _semaphore.WaitAsync();
-                try
-                {
-                    // Double checking to avoid race conditions.
-                    input.Value = TryGetCache(key, out hasCache);
-                    if (hasCache)
-                        return; // Some other thread filled up our cache for us.
+                input.Value = cachedValue;
+                return;
+            }
 
-                    // Settings still not in cache, loading settings and putting it into cache.
-                    var node = new Node("wait.mysql.select", "select * from settings");
-                    await signaler.SignalAsync("wait.mysql.select", node);
-                    _memoryCache.Set(
-                        _cacheKey,
-                        node,
-                        DateTimeOffset.Now.AddMinutes(5));
-                    input.Value = TryGetCache(key, out hasCache);
-                }
-                finally
+            // Avoiding having multiple threads trying to populate cache.
+            await _semaphore.WaitAsync();
+            try
+            {
+                // Double checking to avoid race conditions.
+                if (TryGetCache(key, out cachedValue))
                 {
-                    _semaphore.Release();
+                    // Some other thread filled our cache first.
+                    input.Value = cachedValue;
+                    return;
                 }
+
+                // Settings still not in cache, loading settings and putting it into cache.
+                var node = new Node("wait.mysql.select", "select * from settings");
+                await signaler.SignalAsync("wait.mysql.select", node);
+                _memoryCache.Set(
+                    _cacheKey,
+                    node,
+                    DateTimeOffset.Now.AddMinutes(5));
+                TryGetCache(key, out cachedValue);
+                input.Value = cachedValue;
+            }
+            finally
+            {
+                _semaphore.Release();
             }
         }
 
         #region [ -- Private helper methods -- ]
 
-        object TryGetCache(string key, out bool hasCache)
+        bool TryGetCache(string key, out string result)
         {
             if (_memoryCache.TryGetValue(_cacheKey, out Node value))
             {
@@ -124,15 +87,19 @@ namespace backend.slots
                 {
                     if (idxChild.Children.Any(x => x.Name == "name" && x.Get<string>() == key))
                     {
-                        hasCache = true;
-                        return idxChild.Children.First(x => x.Name == "value").Get<object>();
+                        result = idxChild.Children.First(x => x.Name == "value").Get<string>();
+                        return true;
                     }
                 }
+
+                // We found cache, but we didn't find setting.
+                result = null;
+                return true;
             }
 
             // Settings not found in cache.
-            hasCache = false;
-            return null;
+            result = null;
+            return false;
         }
 
         #endregion
