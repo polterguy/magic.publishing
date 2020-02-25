@@ -12,10 +12,10 @@ slots.create:magic.publishing.url.settings.apply
    /*
     * Found, applying HTTP headers.
     */
-   magic.publishing.date.format:x:@.arguments/*/Last-Modified
+   magic.publishing.date.format:x:@.arguments/*/modified
    strings.concat
-      .:public, max-age=
-      get-value:x:@wait.magic.publishing.settings.get
+      .:private, max-age=
+      get-value:x:@.arguments/*/cache
    http.response.headers.add
-      Cache-Control:x:@.arguments/*/Cache-Control
+      Cache-Control:x:@strings.concat
       Last-Modified:x:@magic.publishing.date.format

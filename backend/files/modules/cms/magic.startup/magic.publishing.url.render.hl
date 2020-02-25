@@ -109,7 +109,7 @@ slots.create:magic.publishing.url.render
                slots.return-nodes
                   status:int:200
                   content:x:@wait.magic.publishing.transform
-                  Last-Modified:x:@wait.mysql.select/*/*/updated
+                  updated:x:@wait.mysql.select/*/*/updated
 
       /*
        * Checking if nothing was returned from cache, at which
@@ -131,13 +131,10 @@ slots.create:magic.publishing.url.render
          /*
           * Applying global/common settings.
           */
-         strings.concat
-            .:"public, max-age="
-            get-value:x:@wait.magic.publishing.settings.get
          unwrap:x:+/*
          slots.signal:magic.publishing.url.settings.apply
-            Last-Modified:x:@wait.magic.publishing.cache/*/Last-Modified
-            Cache-Control:x:@strings.concat
+            modified:x:@wait.magic.publishing.cache/*/updated
+            cache:x:@wait.magic.publishing.settings.get
 
          /*
           * Returning content to caller.
