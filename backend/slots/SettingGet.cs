@@ -17,7 +17,6 @@ namespace backend.slots
     /// <summary>
     /// [magic.publishing.cache.get] slot for returning an item from cache. Returns null if item doesn't exist.
     /// </summary>
-    [Slot(Name = "magic.publishing.settings.get")]
     [Slot(Name = "wait.magic.publishing.settings.get")]
     public class SettingGet : ISlotAsync
     {

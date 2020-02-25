@@ -21,7 +21,6 @@ namespace backend.slots
     /// [magic.publishing.transform] slot transforming a page object to its output by
     /// applying [content] and other parameters, into the specified [template].
     /// </summary>
-    [Slot(Name = "magic.publishing.transform")]
     [Slot(Name = "wait.magic.publishing.transform")]
     public class Transform : ISlot, ISlotAsync
     {

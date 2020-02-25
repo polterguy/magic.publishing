@@ -19,7 +19,6 @@ namespace backend.slots
     /// and if it doesn't exist,evaluates the specified lambda, sets the cache
     /// and then returns the item.
     /// </summary>
-    [Slot(Name = "magic.publishing.cache")]
     [Slot(Name = "wait.magic.publishing.cache")]
     public class Cache : ISlotAsync
     {
@@ -65,7 +64,7 @@ namespace backend.slots
                         await signaler.ScopeAsync(
                             "slots.result",
                             evalResult,
-                            async () => await signaler.SignalAsync("eval", input.Children.First(x => x.Name == ".lambda")));
+                            async () => await signaler.SignalAsync("wait.eval", input.Children.First(x => x.Name == ".lambda")));
 
                         /*
                         * Checking to see if anything was returned at all,
