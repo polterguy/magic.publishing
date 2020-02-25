@@ -24,12 +24,10 @@ namespace backend.slots
     public class Cache : ISlot, ISlotAsync
     {
         /*
-         * Notice, we only allow one thread to fetch data from database at the same time.
-         * This might sound stupid, until you realise every page is agressively cached,
-         * and we don't want to have multiple threads fetching the same document, and
-         * putting it into our cache.
+         * Limiting number of threads that can simultaneously execute its lambda
+         * object inside of cache retrieval, to prevent thread pool starvation.
          */
-        readonly static SemaphoreSlim _semaphore = new SemaphoreSlim(1);
+        readonly static SemaphoreSlim _semaphore = new SemaphoreSlim(4);
         readonly IMemoryCache _memoryCache;
 
         public Cache(IMemoryCache memoryCache)
@@ -127,21 +125,28 @@ namespace backend.slots
                             evalResult,
                             async () => await signaler.SignalAsync("eval", input.Children.First(x => x.Name == ".lambda")));
 
-                        // Clearing lambda and value.
-                        input.Clear();
-                        input.Value = null;
-
                         /*
                         * Checking to see if anything was returned at all,
                         * and if not, we don't store anything into our cache.
                         */
                         if (evalResult.Value != null || evalResult.Children.Any())
                         {
+                            /*
+                             * Storing into cache, notice we default cache time to 60 seconds, unless
+                             * explicitly overridden as [seconds].
+                             * We also clone result before adding to cache, to prevent later changes to propagate
+                             * to cache value.
+                             */
+                            var clone = evalResult.Clone();
                             _memoryCache.Set(
                                 key,
-                                evalResult,
+                                clone,
                                 DateTimeOffset.Now.AddSeconds(
-                                    input.Children.FirstOrDefault(x => x.Name == "seconds")?.GetEx<int>() ?? 5));
+                                    input.Children.FirstOrDefault(x => x.Name == "seconds")?.GetEx<int>() ?? 60));
+
+                            // Clearing children and value, and adding value fetched from lambda.
+                            input.Clear();
+                            input.Value = null;
                             input.AddRange(evalResult.Children.Select(x => x.Clone()));
                             input.Value = evalResult.Value;
                         }
