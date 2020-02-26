@@ -129,14 +129,36 @@ slots.create:magic.publishing.url.render
       else
 
          /*
-          * Applying global/common settings.
+          * Checking if document has been untouched sine the "If-Modified-Since" HTTP header,
+          * at which point we return a 304.
           */
-         unwrap:x:+/*
-         slots.signal:magic.publishing.url.settings.apply
-            modified:x:@wait.magic.publishing.cache/*/updated
-            cache:x:@wait.magic.publishing.settings.get
+         log.info:x:@wait.magic.publishing.cache/*/updated
+         log.info:x:@.arguments/*/If-Modified-Since
+         if
+            mt
+               get-value:x:@wait.magic.publishing.cache/*/updated
+               get-value:x:@.arguments/*/If-Modified-Since
+            .lambda
 
-         /*
-          * Returning content to caller.
-          */
-         slots.return-value:x:@wait.magic.publishing.cache/*/content
+               /*
+                * Document has been changed since the client last fetched it.
+                * Applying global/common settings.
+                */
+               log.info:Document has been changed
+               unwrap:x:+/*
+               slots.signal:magic.publishing.url.settings.apply
+                  modified:x:@wait.magic.publishing.cache/*/updated
+                  cache:x:@wait.magic.publishing.settings.get
+
+               /*
+                * Returning content to caller.
+                */
+               slots.return-value:x:@wait.magic.publishing.cache/*/content
+         else
+
+            /*
+             * Document has not been updated since the last time it was fetched from server.
+             */
+            log.info:Document has not been changed
+            http.response.status-code.set:304
+            
