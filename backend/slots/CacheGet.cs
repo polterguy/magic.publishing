@@ -15,11 +15,11 @@ using magic.signals.contracts;
 namespace backend.slots
 {
     /// <summary>
-    /// [magic.publishing.cache] slot for returning an item from cache,
+    /// [magic.publishing.cache.get] slot for returning an item from cache,
     /// and if it doesn't exist,evaluates the specified lambda, sets the cache
     /// and then returns the item.
     /// </summary>
-    [Slot(Name = "wait.magic.publishing.cache")]
+    [Slot(Name = "wait.magic.publishing.cache.get")]
     public class Cache : ISlotAsync
     {
         /*

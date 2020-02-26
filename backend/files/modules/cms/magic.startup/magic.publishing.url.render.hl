@@ -26,7 +26,7 @@ slots.create:magic.publishing.url.render
        * due to the server caching parts, that will not even try to retrieve the document
        * from the database, before the cache has been flushed.
        */
-      wait.magic.publishing.cache:x:@.arguments/*/url
+      wait.magic.publishing.cache.get:x:@.arguments/*/url
          seconds:x:@wait.magic.publishing.settings.get
          .lambda
 
@@ -123,7 +123,7 @@ slots.create:magic.publishing.url.render
        */
       if
          eq
-            get-value:x:@wait.magic.publishing.cache/*/status
+            get-value:x:@wait.magic.publishing.cache.get/*/status
             .:int:404
          .lambda
 
@@ -138,11 +138,9 @@ slots.create:magic.publishing.url.render
           * Checking if document has been untouched sine the "If-Modified-Since" HTTP header,
           * at which point we return a 304.
           */
-         log.info:x:@wait.magic.publishing.cache/*/updated
-         log.info:x:@.arguments/*/If-Modified-Since
          if
             mt
-               get-value:x:@wait.magic.publishing.cache/*/updated
+               get-value:x:@wait.magic.publishing.cache.get/*/updated
                get-value:x:@.arguments/*/If-Modified-Since
             .lambda
 
@@ -152,13 +150,13 @@ slots.create:magic.publishing.url.render
                 */
                unwrap:x:+/*
                slots.signal:magic.publishing.url.settings.apply
-                  modified:x:@wait.magic.publishing.cache/*/updated
+                  modified:x:@wait.magic.publishing.cache.get/*/updated
                   cache:x:@wait.magic.publishing.settings.get
 
                /*
                 * Returning content to caller.
                 */
-               slots.return-value:x:@wait.magic.publishing.cache/*/content
+               slots.return-value:x:@wait.magic.publishing.cache.get/*/content
          else
 
             /*

@@ -16,4 +16,41 @@ wait.slots.signal:magic.db.mysql.update
    values
    ids
       id:x:@.arguments/*/id
+
+
+/*
+ * Evicting item from cache if existing.
+ */
+wait.mysql.connect:[magic_publishing]
+
+   /*
+    * Figuring out exactly what to evict.
+    */
+   wait.mysql.scalar:select root_resolve_url from item_types where name = @name
+      @name:x:@.arguments/*/item_type
+   .url-cache
+   if
+      eq
+         get-value:x:@wait.mysql.scalar
+         .:
+      .lambda
+         set-value:x:@.url-cache
+            get-value:x:@.arguments/*/url
+   else
+      set-value:x:@.url-cache
+         strings.concat
+            get-value:x:@wait.mysql.scalar
+            .:/
+            get-value:x:@.arguments/*/url
+
+
+   /*
+    * Evicting item from cache.
+    */
+   magic.publishing.cache.evict:x:@.url-cache
+
+
+/*
+ * Returning results of update invocation to caller.
+ */
 slots.return-nodes:x:@wait.slots.signal/*
