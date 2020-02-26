@@ -20,6 +20,11 @@ slots.create:magic.publishing.url.render
 
       /*
        * Fetching item from cache.
+       *
+       * Notice, this logic implies that even though the document actually changes,
+       * it will require "x" number of seconds before the changes are reflected back to the client,
+       * due to the server caching parts, that will not even try to retrieve the document
+       * from the database, before the cache has been flushed.
        */
       wait.magic.publishing.cache:x:@.arguments/*/url
          seconds:x:@wait.magic.publishing.settings.get
@@ -105,11 +110,12 @@ slots.create:magic.publishing.url.render
                /*
                 * Returning results to caller.
                 */
+               magic.publishing.date.convert2utc:x:@wait.mysql.select/*/*/updated
                unwrap:x:+/*
                slots.return-nodes
                   status:int:200
                   content:x:@wait.magic.publishing.transform
-                  updated:x:@wait.mysql.select/*/*/updated
+                  updated:x:@magic.publishing.date.convert2utc
 
       /*
        * Checking if nothing was returned from cache, at which
@@ -144,7 +150,6 @@ slots.create:magic.publishing.url.render
                 * Document has been changed since the client last fetched it.
                 * Applying global/common settings.
                 */
-               log.info:Document has been changed
                unwrap:x:+/*
                slots.signal:magic.publishing.url.settings.apply
                   modified:x:@wait.magic.publishing.cache/*/updated
@@ -159,6 +164,5 @@ slots.create:magic.publishing.url.render
             /*
              * Document has not been updated since the last time it was fetched from server.
              */
-            log.info:Document has not been changed
             http.response.status-code.set:304
             

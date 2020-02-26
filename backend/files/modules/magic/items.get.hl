@@ -43,6 +43,12 @@
    created.lteq:date
    created.neq:date
    created.eq:date
+   updated.mt:date
+   updated.lt:date
+   updated.mteq:date
+   updated.lteq:date
+   updated.neq:date
+   updated.eq:date
    title.like:string
    title.mt:string
    title.lt:string
@@ -71,6 +77,7 @@ wait.slots.signal:magic.db.mysql.read
       template
       item_type
       created
+      updated
       title
       content
 slots.return-nodes:x:@wait.slots.signal/*
