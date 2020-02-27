@@ -9,3 +9,19 @@ mysql.connect
     */
    io.files.load:/init/schema.sql
    mysql.execute:x:@io.files.load
+
+   /*
+    * Lists all default template files, loads them, and inserts them into
+    * template table.
+    */
+   io.files.list:/init/templates/
+   for-each:x:@io.files.list/*
+
+      strings.split:x:@.dp/#
+         .:/
+      strings.split:x:@strings.split/0/-
+         .:.
+      io.files.load:x:@.dp/#
+      mysql.execute:insert into templates (name, content) values (@name, @content)
+         @name:x:@strings.split/0
+         @content:x:@io.files.load
