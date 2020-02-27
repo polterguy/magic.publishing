@@ -102,19 +102,6 @@ CREATE TABLE `templates` (
 );
 
 /*
- * Inserting our default template.
- */
-insert into templates (name, content) values ('default', '<html>
-  <head>
-    <title>![[title]]!</title>
-  </head>
-  <body>
-![[content]]!
-  </body>
-</html>
-');
-
-/*
  * Creating our items table, that contains the published items in your system.
  */
 CREATE TABLE `items` (
@@ -133,13 +120,6 @@ CREATE TABLE `items` (
   CONSTRAINT `template_fky` FOREIGN KEY (`template`) REFERENCES `templates` (`name`),
   PRIMARY KEY (`id`)
 );
-
-/*
- * Inserting default page into database.
- */
-insert into items (`url`, `author`, `template`, `item_type`, `title`, `content`) values ('', 'admin', 'default', 'page', 'Hello World', '# Hello World
-
-This is your first page. Feel free to edit it according to your needs.');
 
 
 
@@ -163,6 +143,6 @@ CREATE TABLE `settings` (
 
 /*
  * Inserting default settings into database.
- * Notice, we're caching dynamic documents for 5 minutes by default.
  */
 insert into settings (`name`, `value`) values ('caching', '300');
+insert into settings (`name`, `value`) values ('copyright-notice', 'Copyright(c) - 2020 Thomas Hansen, thomas@servergardens.com');

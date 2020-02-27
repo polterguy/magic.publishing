@@ -1,0 +1,11 @@
+
+/*
+ * Creates your database by running the "/init/scheme.sql" file
+ */
+mysql.connect
+
+   /*
+    * Loads up your schema file, and executes it.
+    */
+   io.files.load:/init/schema.sql
+   mysql.execute:x:@io.files.load
