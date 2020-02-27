@@ -230,12 +230,15 @@ body {
   min-height: calc(100% - 2rem);
   margin: 1rem auto 1rem auto;
   box-sizing: border-box;
-  padding: 2rem 2rem 4rem 2rem;
   position: relative;
   box-shadow: 3px 3px 10px rgba(0,0,0,.2);
 }
-h1, h2, h3, h4, h5, h6 {
-  margin-bottom: 1.5rem;
+#header {
+  background-image: linear-gradient(rgba(8,25,43,0.15),rgba(8,25,43,0.85));
+  padding: 3rem 0 3rem 0;
+}
+#content {
+  padding: 2rem 2rem 4rem 2rem;
 }
 h1 {
   text-align: center;
