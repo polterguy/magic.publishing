@@ -8,6 +8,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using magic.library;
+using magic.io.services;
+using magic.io.contracts;
+using magic.lambda.io.contracts;
+using magic.publishing.internals;
 
 namespace magic.backend
 {
@@ -30,7 +34,29 @@ namespace magic.backend
              *
              * Notice, must be done AFTER you invoke "AddMvc".
              */
-            services.AddMagic(Configuration, Configuration["magic:license"]);
+            services.AddMagicHttp();
+            services.AddMagicLog4netServices();
+            services.AddMagicSignals(Configuration["magic:license"]);
+            services.AddMagicEndpoints(Configuration);
+            services.AddMagicAuthorization(Configuration);
+            services.AddMagicScheduler(Configuration);
+
+            /*
+             * Associating the IFileServices with its default implementation.
+             */
+            services.AddTransient<IFileService, FileService>();
+
+            /*
+             * Making sure magic.io can only be used by "root" roles.
+             */
+            services.AddSingleton<IAuthorize>((svc) => new AuthorizeOnlyRoles("admin", "editor", "author"));
+
+            /*
+             * Associating the root folder resolver with our own internal class,
+             * that resolves the root folder for magic.io to be the config
+             * setting "magic:io:root-folder", or if not given "/files".
+             */
+            services.AddTransient<IRootResolver, RootResolver>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

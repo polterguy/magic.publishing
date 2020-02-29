@@ -26,6 +26,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { ChartsModule } from 'ng2-charts';
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
+import './extensions/hyperlambda.js';
 
 // Importing "oauth0" to help out with our JWT tokens.
 import { JwtModule } from '@auth0/angular-jwt';
@@ -46,6 +47,9 @@ import { CreateRoleDialogComponent } from './components/auth/modals/create-role-
 import { CreateUserDialogComponent } from './components/auth/modals/create-user-dialog';
 import { EditUserDialogComponent } from './components/auth/modals/edit-user-dialog';
 import { ProfileComponent } from './components/profile/profile.component';
+import { FilesComponent } from './components/files/files.component';
+import { NewFileDialogComponent } from './components/files/modals/new-file-dialog';
+import { ConfirmDeletionDialogComponent } from './components/files/modals/confirm-deletion-dialog';
 
 // CRUD wrapper components, both for the datagrid, and its associated editor/creator dialog.
 import { ItemTypesComponent } from './components/item_types/item_types.component';
@@ -74,6 +78,7 @@ export function tokenGetter() {
     CreateUserDialogComponent,
     EditUserDialogComponent,
     ProfileComponent,
+    FilesComponent,
     FormatDatePipe,
     DateSincePipe,
     ItemTypesComponent,
@@ -85,6 +90,8 @@ export function tokenGetter() {
     TemplatesComponent,
     EditTemplatesComponent,
     MarkedPipe,
+    NewFileDialogComponent,
+    ConfirmDeletionDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -116,6 +123,15 @@ export function tokenGetter() {
     MatMomentDateModule,
     ChartsModule,
   ],
+  exports: [
+    MatButtonModule,
+    MatCardModule,
+    MatTableModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatSnackBarModule,
+    MatSelectModule,
+  ],
   providers: [
     LoaderService, {
       provide: HTTP_INTERCEPTORS,
@@ -132,6 +148,8 @@ export function tokenGetter() {
     EditItemsComponent,
     EditSettingsComponent,
     EditTemplatesComponent,
+    NewFileDialogComponent,
+    ConfirmDeletionDialogComponent,
   ]
 })
 export class AppModule { }

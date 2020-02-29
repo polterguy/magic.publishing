@@ -1,0 +1,19 @@
+
+/*
+ * Deletes the specified [folder] folder.
+ */
+.arguments
+   folder:string
+.description:"Deletes the specified [folder] folder."
+
+
+/*
+ * Ensures user is authorized to access endpoint.
+ */
+auth.ticket.verify:admin, editor
+
+
+/*
+ * Deletes the specified folder.
+ */
+io.folders.delete:x:@.arguments/*/folder

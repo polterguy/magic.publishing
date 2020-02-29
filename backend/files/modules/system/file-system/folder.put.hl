@@ -1,0 +1,19 @@
+
+/*
+ * Creates the specified [folder] folder.
+ */
+.arguments
+   folder:string
+.description:"Creates the specified [folder] folder."
+
+
+/*
+ * Ensures user is authorized to access endpoint.
+ */
+auth.ticket.verify:admin, editor
+
+
+/*
+ * Creates the specified folder.
+ */
+io.folders.create:x:@.arguments/*/folder

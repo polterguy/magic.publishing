@@ -1,0 +1,19 @@
+
+<h1 mat-dialog-title>Confirm deletion!</h1>
+<div mat-dialog-content>
+  <p>Please confirm deletion of file <label style="color: Red;">{{data.path}}</label></p>
+</div>
+<div mat-dialog-actions>
+  <div style="width:100%; text-align: right;">
+
+    <button
+      mat-raised-button
+      color="primary"
+      [mat-dialog-close]="data.path">Ok</button>
+
+    <button
+      mat-button
+      (click)="close()">Close</button>
+
+  </div>
+</div>

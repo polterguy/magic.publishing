@@ -10,6 +10,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { AuthComponent } from './components/auth/auth.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { FilesComponent } from './components/files/files.component';
 
 // Then importing all "entity components". Basically, the datagrids for viewing entities from your backend.
 import { ItemTypesComponent } from './components/item_types/item_types.component';
@@ -31,6 +32,7 @@ const routes: Routes = [
   { path: 'items', component: ItemsComponent },
   { path: 'settings', component: SettingsComponent },
   { path: 'templates', component: TemplatesComponent },
+  { path: 'files', component: FilesComponent },
 ];
 
 // Declaring our main module.

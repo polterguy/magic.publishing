@@ -64,6 +64,17 @@
       <span class="menu-item-text">Settings</span>
     </a>
     <a
+      *ngIf="inRole(['admin', 'author', 'editor'])"
+      mat-button
+      routerLink="/files"
+      routerLinkActive="active-link"
+      class="menu-item"
+      (click)="closeNavigator()"
+      [routerLinkActiveOptions]="{exact:true}">
+      <mat-icon matSuffix>grade</mat-icon>
+      <span class="menu-item-text">Files</span>
+    </a>
+    <a
       *ngIf="inRole(['root','admin'])"
       mat-button
       routerLink="/auth"
