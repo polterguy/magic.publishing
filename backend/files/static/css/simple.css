@@ -210,6 +210,12 @@ textarea {
 /*
  * Custom styles.
  */
+a {
+  color:#5555ff;
+}
+a:hover {
+  color:#0000a0;
+}
 * {
   margin: 0;
   padding: 0;
@@ -276,6 +282,15 @@ body {
 #menu ul li a:hover {
   background-color: #222;
 }
+
+#article-list li {
+  margin-bottom: .5rem;
+}
+#article-list li a {
+  text-decoration: none;
+  font-size: 1.2rem;
+}
+
 h1 {
   text-align: center;
   font-size: 2.2em;
