@@ -253,6 +253,18 @@ export class FilesComponent implements OnInit {
     }
   }
 
+  canExecute(el: any) {
+    return el.path.endsWith('.hl');
+  }
+
+  execute(el: any) {
+    this.fileService.evaluate(el.extra.fileContent).subscribe(res => {
+      this.showInfo('File evaluated successfully');
+    }, err => {
+      this.showError(err.error.message);
+    });
+  }
+
   save(el: any) {
     this.fileService.saveFile(el.path, el.extra.fileContent).subscribe(res => {
       this.showInfo('File successfully saved');

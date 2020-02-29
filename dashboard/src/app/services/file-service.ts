@@ -100,4 +100,12 @@ export class FileService {
       environment.apiUrl +
       'magic/modules/system/misc/vocabulary');
   }
+
+  evaluate(hyperlambda: string) {
+    return this.httpClient.post<any>(
+      environment.apiUrl +
+      'magic/modules/system/misc/evaluate', {
+        hyperlambda
+    });
+  }
 }

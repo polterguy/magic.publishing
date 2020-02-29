@@ -86,6 +86,11 @@
               style="margin-top: 1rem;">
               <button
                 mat-button
+                *ngIf="canExecute(el)"
+                (click)="execute(el)"
+                matTooltip="Executes your file">Execute</button>
+              <button
+                mat-button
                 (click)="save(el)"
                 matTooltip="Saves your file">Save</button>
               <button
