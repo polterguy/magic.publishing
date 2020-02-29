@@ -1,5 +1,5 @@
 
-# Magic Publishing - A 3 day CMS system for your Enterprise
+# Magic Publishing, a 3 day CMS system for your Enterprise
 
 Magic Publishing is a Content Management System (CMS) built in .Net Core with some unique qualities. First of all,
 its intention is to be super scalable, and extremly fast. Hence, it provides very agressive caching out of the box.
