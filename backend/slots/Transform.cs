@@ -22,33 +22,8 @@ namespace backend.slots
     /// applying [content] and other parameters, into the specified [template].
     /// </summary>
     [Slot(Name = "wait.magic.publishing.transform")]
-    public class Transform : ISlot, ISlotAsync
+    public class Transform : ISlotAsync
     {
-        /// <summary>
-        /// Implementation of signal
-        /// </summary>
-        /// <param name="signaler">Signaler used to signal</param>
-        /// <param name="input">Parameters passed from signaler</param>
-        public void Signal(ISignaler signaler, Node input)
-        {
-            // Retrieving and unrolling any plugins and arguments found in [template].
-            var template = input.Children.First(x => x.Name == "template").Get<string>();
-            template = UnrollArguments(input, template);
-            template = UnrollPlugins(signaler, template, input, false);
-
-            // Retrieving and unrolling any plugins found in [content].
-            var content = input.Children.First(x => x.Name == "content").Get<string>();
-            content = UnrollArguments(input, content);
-            content = UnrollPlugins(signaler, content, input, true);
-
-            // Replacing content in template with item's content.
-            var result = template.Replace("![[content]]!", content);
-
-            // Returning results to caller.
-            input.Value = result;
-        }
-
-
         /// <summary>
         /// Handles the signal for the class.
         /// </summary>
