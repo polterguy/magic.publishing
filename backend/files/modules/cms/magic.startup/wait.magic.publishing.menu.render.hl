@@ -1,0 +1,29 @@
+
+/*
+ * Renders the default menu, which simply implies returning
+ * a list of <li> elements for each page in the system.
+ */
+slots.create:wait.magic.publishing.menu.render
+
+   /*
+    * Selects all pages from database.
+    */
+   wait.mysql.select:@"select i.title, concat(it.root_resolve_url, '/', i.url) as url from items i
+    inner join item_types it on i.item_type = it.name"
+
+   /*
+    * Iterating through each page, creating a list of <li> elements,
+    * we return to caller.
+    */
+   .html
+   for-each:x:@wait.mysql.select/*
+      set-value:x:@.html
+         strings.concat
+            get-value:x:@.html
+            .:@"          <li><a href="""
+            get-value:x:@.dp/#/*/url
+            .:@""">"
+            get-value:x:@.dp/#/*/title
+            .:</a>
+            .:"\r\n"
+   slots.return-value:x:@.html

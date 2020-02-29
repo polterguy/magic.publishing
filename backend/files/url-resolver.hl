@@ -9,5 +9,5 @@
  */
 add:x:../*/wait.slots.signal
    get-nodes:x:@.arguments/*
-wait.slots.signal:magic.publishing.url.render
+wait.slots.signal:wait.magic.publishing.url.render
 slots.return-value:x:-

@@ -6,7 +6,7 @@
  * In addition, it will apply some HTTP headers to the response object, according to
  * settings, and properties from document itself.
  */
-slots.create:magic.publishing.url.render
+slots.create:wait.magic.publishing.url.render
 
    /*
     * Logging.

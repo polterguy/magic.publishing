@@ -247,6 +247,31 @@ body {
 #content {
   padding: 2rem 2rem 4rem 2rem;
 }
+#menu {
+  background-color: rgb(0,0,0);
+  overflow: auto;
+  height: auto;
+}
+#menu ul {
+  list-style: none;
+}
+#menu ul li {
+  float: left;
+}
+#menu ul li a {
+  padding-left: 2rem;
+  text-decoration: none;
+  color: #d0d0d0;
+  display: block;
+  padding: .5rem .5rem .5rem .5rem;
+  min-width: 5rem;
+}
+#menu ul li:first-child a {
+  padding-left: 2rem;
+}
+#menu ul li a:hover {
+  background-color: #222;
+}
 h1 {
   text-align: center;
   font-size: 2.2em;
@@ -287,7 +312,7 @@ td {
   text-align: left;
   font-weight: normal;
 }
-.copyright {
+#copyright {
   position: absolute;
   bottom: 1rem;
   font-size: .8rem;
