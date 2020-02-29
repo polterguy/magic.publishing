@@ -1,27 +1,53 @@
 
 /*
- * Creates your database by running the "/init/scheme.sql" file
+ * Initialises your database as follows.
+ *
+ * 1. Creates your database by running the "/init/scheme.sql" file
+ * 2. Inserts all default templates from the "/init/templates/" folder.
+ *
+ * Notice, if the database alread exists, it will not do anything.
  */
 mysql.connect
 
    /*
-    * Loads up your schema file, and executes it.
+    * Wrapping the rest of the file in a try/catch, which will make
+    * sure we don't prematurely kill process, in case database already
+    * exists from before.
     */
-   io.files.load:/init/schema.sql
-   mysql.execute:x:@io.files.load
+   try
 
-   /*
-    * Lists all default template files, loads them, and inserts them into
-    * template table.
-    */
-   io.files.list:/init/templates/
-   for-each:x:@io.files.list/*
+      /*
+       * Loads up your schema file, and executes it.
+       */
+      log.info:Trying to create magic_publishing database
+      io.files.load:/init/schema.sql
+      mysql.execute:x:@io.files.load
+      log.info:magic_publishing database successfully created
 
-      strings.split:x:@.dp/#
-         .:/
-      strings.split:x:@strings.split/0/-
-         .:.
-      io.files.load:x:@.dp/#
-      mysql.execute:insert into templates (name, content) values (@name, @content)
-         @name:x:@strings.split/0
-         @content:x:@io.files.load
+      /*
+       * Lists all default template files, loads them, and inserts them into
+       * template table.
+       */
+      log.info:Trying to insert all default templates from /init/templates/ folder
+      io.files.list:/init/templates/
+      for-each:x:@io.files.list/*
+
+         strings.split:x:@.dp/#
+            .:/
+         strings.split:x:@strings.split/0/-
+            .:.
+         io.files.load:x:@.dp/#
+         mysql.execute:insert into templates (name, content) values (@name, @content)
+            @name:x:@strings.split/0
+            @content:x:@io.files.load
+
+      log.info:All default templates successfully inserted into magic_publishing database
+
+   .catch
+
+      /*
+       * This is probably due to that database exists from before, and hence
+       * of no real importance - Still we log it to be on the safe side.
+       */
+      log.info:"Couldn't initialise database for some reasons. See the next log entry for details."
+      log.error:x:@.arguments/*/message
