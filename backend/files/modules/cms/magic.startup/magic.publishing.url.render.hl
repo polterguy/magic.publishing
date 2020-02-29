@@ -9,6 +9,15 @@
 slots.create:magic.publishing.url.render
 
    /*
+    * Logging.
+    */
+   strings.concat
+      .:"Trying to serve URL '"
+      get-value:x:@.arguments/*/url
+      .:"'"
+   log.debug:x:-
+
+   /*
     * Opening up our database connection.
     */
    wait.mysql.connect:[magic_publishing]
@@ -29,6 +38,15 @@ slots.create:magic.publishing.url.render
       wait.magic.publishing.cache.get:x:@.arguments/*/url
          seconds:x:@wait.magic.publishing.settings.get
          .lambda
+
+            /*
+             * Logging.
+             */
+            strings.concat
+               .:"URL not found in cache. Processing request for URL '"
+               get-value:x:@.arguments/*/url
+               .:"' and storing it in cache."
+            log.debug:x:-
 
             /*
              * Creating parameters for our SQL.
@@ -57,6 +75,7 @@ slots.create:magic.publishing.url.render
                    * Unsupported URL, too may segments.
                    */
                   slots.return-nodes
+                     status:int:404
 
             else-if
                eq
@@ -101,7 +120,8 @@ slots.create:magic.publishing.url.render
             wait.else
 
                /*
-                * Page exists, invoking slot responsible for transforming page into valid output.
+                * Page exists, invoking slot responsible for transforming page
+                * into valid output.
                 */
                add:x:./*/wait.magic.publishing.transform
                   get-nodes:x:@wait.mysql.select/*/*
@@ -135,8 +155,8 @@ slots.create:magic.publishing.url.render
       else
 
          /*
-          * Checking if document has been untouched sine the "If-Modified-Since" HTTP header,
-          * at which point we return a 304.
+          * Checking if document has been untouched sine the "If-Modified-Since"
+          * HTTP header, at which point we return a 304.
           */
          if
             mt
@@ -160,7 +180,8 @@ slots.create:magic.publishing.url.render
          else
 
             /*
-             * Document has not been updated since the last time it was fetched from server.
+             * Document has not been updated since the last time it was
+             * fetched from server.
              */
             http.response.status-code.set:304
             
