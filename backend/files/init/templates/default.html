@@ -1,9 +1,17 @@
 <html>
   <head>
+    <base href="/">
     <title>![[title]]!</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
-    <link rel="stylesheet" href="css/simple.css">
-    <base href="/">
+![[
+wait.magic.publishing.settings.get:css-file
+strings.concat
+   .:@"    <link rel=""stylesheet"" href="""
+   get-value:x:@wait.magic.publishing.settings.get
+   .:@""">"
+   .:"\r\n"
+slots.return-value:x:-
+]]!
   </head>
   <body>
     <div id="wrapper">

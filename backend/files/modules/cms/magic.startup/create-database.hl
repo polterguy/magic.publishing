@@ -47,7 +47,15 @@ mysql.connect
        * Creating a dummy default landing page.
        */
       mysql.execute:@"insert into items (url, author, template, item_type, title, content)
-        values ('', 'admin', 'default', 'page', 'Home', 'Your default Magic Publishing page. Edit it in your dashboard.')"
+        values ('', 'admin', @template, 'page', @title, @content)"
+         @template:default
+         @title:Home
+         @content:Your default Magic Publishing page. Edit it in your dashboard.
+
+      /*
+       * Making sure the default CSS file to use is "simple.css"
+       */
+      mysql.execute:@"insert into settings (name, value) values ('css-file', 'css/simple.css')"
 
    .catch
 
