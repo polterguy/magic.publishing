@@ -231,6 +231,11 @@ body {
   position: relative;
   min-height: 100%;
 }
+#header {
+  background-image: linear-gradient(rgba(8,25,43,0.15),rgba(8,25,43,0.85));
+  padding: 1.5rem 0 1.5rem 0;
+  color: #e0e0e0;
+}
 @media only screen and (min-width: 980px) {
   #wrapper {
     width: 980px;
@@ -238,11 +243,9 @@ body {
     min-height: calc(100% - 6rem);
     box-shadow: 3px 3px 10px rgba(0,0,0,.2);
   }
-}
-#header {
-  background-image: linear-gradient(rgba(8,25,43,0.15),rgba(8,25,43,0.85));
-  padding: 3rem 0 3rem 0;
-  color: #e0e0e0;
+  #header {
+    padding: 3rem 0 3rem 0;
+  }
 }
 #content {
   padding: 2rem 2rem 4rem 2rem;

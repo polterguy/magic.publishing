@@ -3,12 +3,13 @@
     <title>![[title]]!</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
     <link rel="stylesheet" href="css/simple.css">
+    <base href="/">
   </head>
   <body>
     <div id="wrapper">
-      <div id="header">
+      <header id="header">
         <h1>![[title]]!</h1>
-      </div>
+      </header>
       <nav id="menu">
         <ul>
 ![[
@@ -17,15 +18,15 @@ slots.return-value:x:-
 ]]!
         </ul>
       </nav>
-      <div id="content">
-        ![[content]]!
-      </div>
-      <div id="copyright">
+      <main id="content">
+![[content]]!
+      </main>
+      <footer id="copyright">
 ![[
 wait.magic.publishing.settings.get:copyright-notice
 slots.return-value:x:-
 ]]!
-      </div>
+      </footer>
     </div>
   </body>
 </html>
