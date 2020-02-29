@@ -313,6 +313,13 @@ h5 {
 }
 p {
   font-size: 1.2em;
+  margin-bottom: 1rem;
+}
+em {
+  font-style: italic;
+}
+strong {
+  font-weight: bold;
 }
 .clear {
   clear:both;
