@@ -249,6 +249,7 @@ body {
 }
 #content {
   padding: 2rem 2rem 4rem 2rem;
+  text-align: justify;
 }
 #menu {
   background-color: rgb(0,0,0);

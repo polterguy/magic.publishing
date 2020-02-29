@@ -43,6 +43,12 @@ mysql.connect
 
       log.info:All default templates successfully inserted into magic_publishing database
 
+      /*
+       * Creating a dummy default landing page.
+       */
+      mysql.execute:@"insert into items (url, author, template, item_type, title, content)
+        values ('', 'admin', 'default', 'page', 'Home', 'Your default Magic Publishing page. Edit it in your dashboard.')"
+
    .catch
 
       /*
