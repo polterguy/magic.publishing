@@ -40,6 +40,31 @@ code was literally done.
 </a>
 </p>
 
+## Getting started
+
+You will need MySQL, DotNet CLI, Visual Studio Code, NodeJS and Angular installed. Google these toolkits to
+install them for your specific operating system. Then download the latest release above, unzip, and open the
+unzipped folder in for instance Visual Studio Code. Then open two terminal windows, and in one of these terminal
+windows go into the _"dashboard"_ folder, and write the following terminal commands in sequence.
+
+```
+npm link
+ng serve
+```
+
+The above will serve your dashboard over port 4200. The to start the backend, use another terminal window, and
+enter the _"backend"_ folder, and type the following to start the backend.
+
+```
+dotnet run
+```
+
+This will start your backend on port 55247. To visit your CMS systems backend, go to [localhost:4200](http://localhost:4200),
+and to visit its frontend (your actual website), visit [localhost:55247](http://localhost:55247). The system features
+a very aggressive cache though, so if you edit settings and such, or your template, it won't be visible before 5
+minutes have passed. If this is a problem during development, you can set the _"caching"_ setting to 1 second
+using your dashboard's _"Settings"_ component.
+
 ## BETA
 
 Notice, Magic Publishing is BETA at the moment. But if you want to you can subscribe to when it's released in
