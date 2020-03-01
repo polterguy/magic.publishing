@@ -7,4 +7,5 @@ wait.slots.signal:magic.db.mysql.delete
    database:magic_publishing
    table:settings
    ids
+magic.publishing.settings.flush
 slots.return-nodes:x:@wait.slots.signal/*

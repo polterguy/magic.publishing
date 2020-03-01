@@ -148,6 +148,12 @@ slots.create:wait.magic.publishing.url.render
          /*
           * Checking if document has been untouched sine the "If-Modified-Since"
           * HTTP header, at which point we return a 304.
+          *
+          * Notice, we also check if document is older than "settings.caching" number
+          * of seconds, at which point we also force a re-rendering of document, since
+          * documents can have relationships between each other, and only relying on
+          * "updated" SQL field might not reflect the entire document (plugins might change
+          * the state of document, etc).
           */
          if
             or

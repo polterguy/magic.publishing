@@ -15,14 +15,14 @@ using magic.signals.contracts;
 namespace backend.slots
 {
     /// <summary>
-    /// [magic.publishing.cache.get] slot for returning an item from cache. Returns null if item doesn't exist.
+    /// [wait.magic.publishing.cache.get] slot for returning an item from cache. Returns null if item doesn't exist.
     /// </summary>
     [Slot(Name = "wait.magic.publishing.settings.get")]
     public class SettingGet : ISlotAsync
     {
         readonly IMemoryCache _memoryCache;
         readonly static SemaphoreSlim _semaphore = new SemaphoreSlim(1);
-        const string _cacheKey = "magic.publishing.settings";
+        internal const string _cacheKey = "magic.publishing.settings";
 
         public SettingGet(IMemoryCache memoryCache)
         {

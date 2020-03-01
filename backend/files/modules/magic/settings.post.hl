@@ -9,4 +9,5 @@ wait.slots.signal:magic.db.mysql.create
    table:settings
    return-id:bool:false
    values
+magic.publishing.settings.flush
 slots.return-nodes:x:@wait.slots.signal/*

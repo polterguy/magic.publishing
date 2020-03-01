@@ -11,4 +11,5 @@ wait.slots.signal:magic.db.mysql.update
    values
    ids
       name:x:@.arguments/*/name
+magic.publishing.settings.flush
 slots.return-nodes:x:@wait.slots.signal/*
