@@ -26,13 +26,13 @@ dynamically substitute the dynamic portions of your page.
 It is also async in nature, allowing for an insane amount of throughput, easily scaling to a _lot_ of simultaneous
 users. And it has a modern Angular based dashboard for editing items and settings in the system.
 
-## WTF ...?
+## Wut ...?
 
 To understand how I could create the system in only 3 days, realise I used a _"no-code"_ framework, built by
 yours truly, called [Magic](https://polterguy.github.io). This framework basically produced 95% of the code
 that the system is dependent upon, and it did it in 10 seconds. To understand how, watch the following video,
 and realise all I really had to do, was to design my database, click two buttons, and 95% of my CMS system's
-code was literally done!
+code was literally done.
 
 <p align="center">
 <a href="https://www.youtube.com/watch?v=8xO9H-2Fejc">
