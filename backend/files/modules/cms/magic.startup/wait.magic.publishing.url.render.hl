@@ -9,15 +9,6 @@
 slots.create:wait.magic.publishing.url.render
 
    /*
-    * Logging.
-    */
-   strings.concat
-      .:"Trying to serve URL '"
-      get-value:x:@.arguments/*/url
-      .:"'"
-   log.debug:x:-
-
-   /*
     * Opening up our database connection.
     */
    wait.mysql.connect:[magic_publishing]
@@ -46,7 +37,7 @@ slots.create:wait.magic.publishing.url.render
                .:"URL not found in cache. Processing request for URL '"
                get-value:x:@.arguments/*/url
                .:"' and storing it in cache."
-            log.debug:x:-
+            log.info:x:-
 
             /*
              * Creating parameters for our SQL.
@@ -159,18 +150,23 @@ slots.create:wait.magic.publishing.url.render
           * HTTP header, at which point we return a 304.
           */
          if
-            mt
-               get-value:x:@wait.magic.publishing.cache.get/*/updated
-               get-value:x:@.arguments/*/If-Modified-Since
+            or
+               mt
+                  get-value:x:@wait.magic.publishing.cache.get/*/updated
+                  get-value:x:@.arguments/*/If-Modified-Since
+               magic.publishing.cache.is-expired
+                  seconds:x:@wait.magic.publishing.settings.get
+                  If-Modified-Since:x:@.arguments/*/If-Modified-Since
             .lambda
 
                /*
                 * Document has been changed since the client last fetched it.
                 * Applying global/common settings.
                 */
+               magic.publishing.date.now
                unwrap:x:+/*
                slots.signal:magic.publishing.url.settings.apply
-                  modified:x:@wait.magic.publishing.cache.get/*/updated
+                  modified:x:@magic.publishing.date.now
                   cache:x:@wait.magic.publishing.settings.get
 
                /*
