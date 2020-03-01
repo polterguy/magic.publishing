@@ -52,7 +52,7 @@ npm link
 ng serve
 ```
 
-The above will serve your dashboard over port 4200. The to start the backend, use another terminal window, and
+The above will serve your dashboard over port 4200. Then to start the backend, use another terminal window, and
 enter the _"backend"_ folder, and type the following to start the backend.
 
 ```
