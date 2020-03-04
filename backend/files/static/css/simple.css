@@ -212,6 +212,7 @@ textarea {
  */
 a {
   color:#5555ff;
+  text-decoration: none;
 }
 a:hover {
   color:#0000a0;
