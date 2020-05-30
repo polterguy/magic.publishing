@@ -53,4 +53,4 @@ wait.mysql.connect:[magic_publishing]
 /*
  * Returning results of update invocation to caller.
  */
-slots.return-nodes:x:@wait.slots.signal/*
+return-nodes:x:@wait.slots.signal/*

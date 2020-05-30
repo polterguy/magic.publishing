@@ -19,4 +19,4 @@ wait.slots.signal:magic.db.mysql.read
    args
    columns
       username
-slots.return-nodes:x:@wait.slots.signal/*
+return-nodes:x:@wait.slots.signal/*

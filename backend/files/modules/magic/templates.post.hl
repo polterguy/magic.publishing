@@ -9,4 +9,4 @@ wait.slots.signal:magic.db.mysql.create
    table:templates
    return-id:bool:false
    values
-slots.return-nodes:x:@wait.slots.signal/*
+return-nodes:x:@wait.slots.signal/*

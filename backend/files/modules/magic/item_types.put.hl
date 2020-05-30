@@ -11,4 +11,4 @@ wait.slots.signal:magic.db.mysql.update
    values
    ids
       name:x:@.arguments/*/name
-slots.return-nodes:x:@wait.slots.signal/*
+return-nodes:x:@wait.slots.signal/*

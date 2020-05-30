@@ -12,4 +12,4 @@ wait.slots.signal:magic.db.mysql.update
    ids
       name:x:@.arguments/*/name
 magic.publishing.settings.flush
-slots.return-nodes:x:@wait.slots.signal/*
+return-nodes:x:@wait.slots.signal/*

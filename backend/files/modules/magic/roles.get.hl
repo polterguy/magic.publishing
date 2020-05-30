@@ -27,4 +27,4 @@ wait.slots.signal:magic.db.mysql.read
    columns
       name
       description
-slots.return-nodes:x:@wait.slots.signal/*
+return-nodes:x:@wait.slots.signal/*

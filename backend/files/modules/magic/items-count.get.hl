@@ -63,4 +63,4 @@ wait.slots.signal:magic.db.mysql.read
       limit:long:1
    columns
       count(*) as count
-slots.return-nodes:x:@wait.slots.signal/*
+return-nodes:x:@wait.slots.signal/*

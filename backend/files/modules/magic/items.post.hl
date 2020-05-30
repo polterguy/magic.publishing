@@ -13,4 +13,4 @@ wait.slots.signal:magic.db.mysql.create
    table:items
    return-id:bool:true
    values
-slots.return-nodes:x:@wait.slots.signal/*
+return-nodes:x:@wait.slots.signal/*

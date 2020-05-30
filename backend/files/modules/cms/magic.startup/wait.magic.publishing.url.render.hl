@@ -65,7 +65,7 @@ slots.create:wait.magic.publishing.url.render
                   /*
                    * Unsupported URL, too may segments.
                    */
-                  slots.return-nodes
+                  return-nodes
                      status:int:404
 
             else-if
@@ -105,7 +105,7 @@ slots.create:wait.magic.publishing.url.render
                   /*
                    * Item was not found in database.
                    */
-                  slots.return-nodes
+                  return-nodes
                      status:int:404
 
             wait.else
@@ -123,7 +123,7 @@ slots.create:wait.magic.publishing.url.render
                 */
                magic.publishing.date.convert2utc:x:@wait.mysql.select/*/*/updated
                unwrap:x:+/*
-               slots.return-nodes
+               return-nodes
                   status:int:200
                   content:x:@wait.magic.publishing.transform
                   updated:x:@magic.publishing.date.convert2utc

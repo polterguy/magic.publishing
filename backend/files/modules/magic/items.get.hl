@@ -80,4 +80,4 @@ wait.slots.signal:magic.db.mysql.read
       updated
       title
       content
-slots.return-nodes:x:@wait.slots.signal/*
+return-nodes:x:@wait.slots.signal/*

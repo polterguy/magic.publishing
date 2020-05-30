@@ -27,4 +27,4 @@ wait.slots.signal:magic.db.mysql.read
    columns
       name
       root_resolve_url
-slots.return-nodes:x:@wait.slots.signal/*
+return-nodes:x:@wait.slots.signal/*
