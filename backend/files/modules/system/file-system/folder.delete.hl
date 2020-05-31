@@ -16,4 +16,4 @@ auth.ticket.verify:admin, editor
 /*
  * Deletes the specified folder.
  */
-io.folders.delete:x:@.arguments/*/folder
+io.folder.delete:x:@.arguments/*/folder

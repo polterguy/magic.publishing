@@ -16,10 +16,10 @@ auth.ticket.verify:admin, author, editor
 /*
  * Listing all folders in specified folder.
  */
-io.folders.list:x:@.arguments/*/folder
+io.folder.list:x:@.arguments/*/folder
 
 
 /*
  * Returning results of above invocation to caller.
  */
-return-nodes:x:@io.folders.list/*
+return-nodes:x:@io.folder.list/*
