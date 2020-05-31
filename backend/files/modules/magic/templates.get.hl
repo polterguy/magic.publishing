@@ -18,13 +18,13 @@
    content.neq:string
    content.eq:string
 auth.ticket.verify:admin, author, editor
-add:x:./*/wait.slots.signal/*/args
+add:x:./*/wait.signal/*/args
    get-nodes:x:@.arguments/*
-wait.slots.signal:magic.db.mysql.read
+wait.signal:magic.db.mysql.read
    database:magic_publishing
    table:templates
    args
    columns
       name
       content
-return-nodes:x:@wait.slots.signal/*
+return-nodes:x:@wait.signal/*

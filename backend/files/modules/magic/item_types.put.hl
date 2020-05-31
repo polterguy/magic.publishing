@@ -2,13 +2,13 @@
    name:string
    root_resolve_url:string
 auth.ticket.verify:admin
-add:x:./*/wait.slots.signal/*/values
+add:x:./*/wait.signal/*/values
    get-nodes:x:@.arguments/*
 unwrap:x:+/*/ids/*
-wait.slots.signal:magic.db.mysql.update
+wait.signal:magic.db.mysql.update
    database:magic_publishing
    table:item_types
    values
    ids
       name:x:@.arguments/*/name
-return-nodes:x:@wait.slots.signal/*
+return-nodes:x:@wait.signal/*

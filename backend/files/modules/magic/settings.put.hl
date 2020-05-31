@@ -2,14 +2,14 @@
    name:string
    value:string
 auth.ticket.verify:admin
-add:x:./*/wait.slots.signal/*/values
+add:x:./*/wait.signal/*/values
    get-nodes:x:@.arguments/*
 unwrap:x:+/*/ids/*
-wait.slots.signal:magic.db.mysql.update
+wait.signal:magic.db.mysql.update
    database:magic_publishing
    table:settings
    values
    ids
       name:x:@.arguments/*/name
 magic.publishing.settings.flush
-return-nodes:x:@wait.slots.signal/*
+return-nodes:x:@wait.signal/*

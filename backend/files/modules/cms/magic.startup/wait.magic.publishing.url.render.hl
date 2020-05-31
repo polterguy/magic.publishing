@@ -171,7 +171,7 @@ slots.create:wait.magic.publishing.url.render
                 */
                magic.publishing.date.now
                unwrap:x:+/*
-               slots.signal:magic.publishing.url.settings.apply
+               signal:magic.publishing.url.settings.apply
                   modified:x:@magic.publishing.date.now
                   cache:x:@wait.magic.publishing.settings.get
 

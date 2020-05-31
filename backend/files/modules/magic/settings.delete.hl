@@ -1,11 +1,11 @@
 .arguments
    name:string
 auth.ticket.verify:admin
-add:x:./*/wait.slots.signal/*/ids
+add:x:./*/wait.signal/*/ids
    get-nodes:x:@.arguments/*
-wait.slots.signal:magic.db.mysql.delete
+wait.signal:magic.db.mysql.delete
    database:magic_publishing
    table:settings
    ids
 magic.publishing.settings.flush
-return-nodes:x:@wait.slots.signal/*
+return-nodes:x:@wait.signal/*

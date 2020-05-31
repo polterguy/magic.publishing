@@ -7,10 +7,10 @@
    title:string
    content:string
 auth.ticket.verify:admin, editor
-add:x:./*/wait.slots.signal/*/values
+add:x:./*/wait.signal/*/values
    get-nodes:x:@.arguments/*
 unwrap:x:+/*/ids/*
-wait.slots.signal:magic.db.mysql.update
+wait.signal:magic.db.mysql.update
    database:magic_publishing
    table:items
    values
@@ -53,4 +53,4 @@ wait.mysql.connect:[magic_publishing]
 /*
  * Returning results of update invocation to caller.
  */
-return-nodes:x:@wait.slots.signal/*
+return-nodes:x:@wait.signal/*

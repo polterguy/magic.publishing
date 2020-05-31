@@ -18,13 +18,13 @@
    value.neq:string
    value.eq:string
 auth.ticket.verify:admin
-add:x:./*/wait.slots.signal/*/args
+add:x:./*/wait.signal/*/args
    get-nodes:x:@.arguments/*
-wait.slots.signal:magic.db.mysql.read
+wait.signal:magic.db.mysql.read
    database:magic_publishing
    table:settings
    args
    columns
       name
       value
-return-nodes:x:@wait.slots.signal/*
+return-nodes:x:@wait.signal/*

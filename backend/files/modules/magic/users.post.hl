@@ -3,13 +3,13 @@
    password:string
 auth.ticket.verify:admin
 eval:x:+
-slots.signal:transformers.hash-password
+signal:transformers.hash-password
    reference:x:@.arguments/*/password
-add:x:./*/wait.slots.signal/*/values
+add:x:./*/wait.signal/*/values
    get-nodes:x:@.arguments/*
-wait.slots.signal:magic.db.mysql.create
+wait.signal:magic.db.mysql.create
    database:magic_publishing
    table:users
    return-id:bool:false
    values
-return-nodes:x:@wait.slots.signal/*
+return-nodes:x:@wait.signal/*
