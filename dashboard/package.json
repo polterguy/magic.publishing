@@ -28,7 +28,7 @@
     "chart.js": "^2.9.4",
     "codemirror": "^5.58.2",
     "marked": "^4.0.10",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "ng2-charts": "^2.3.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.11.1",
